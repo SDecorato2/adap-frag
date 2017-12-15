@@ -1,13 +1,16 @@
 package com.nightonke.saver.adapter;
 
 /**
- * Created by 伟平 on 2015/11/13.
+ * @Created by 伟平 on 2015/11/13.
+ * @Version 2.1
+ *
  */
+
+
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +36,10 @@ import com.nightonke.saver.util.CoCoinUtil;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This class produce some results
+ */
+
 public class MySwipeableItemAdapter
         extends RecyclerView.Adapter<MySwipeableItemAdapter.MyViewHolder>
         implements SwipeableItemAdapter<MySwipeableItemAdapter.MyViewHolder> {
@@ -40,6 +47,10 @@ public class MySwipeableItemAdapter
     // NOTE: Make accessible with short name
     private interface Swipeable extends SwipeableItemConstants {
     }
+
+    /*
+    declarations of variables
+     */
 
     private OnItemDeleteListener onItemDeleteListener;
     private OnItemClickListener onItemClickListener;
@@ -50,6 +61,9 @@ public class MySwipeableItemAdapter
 
     private List<CoCoinRecord> records;
 
+    /**
+     * interface EventListener
+     */
     public interface EventListener {
         void onItemRemoved(int position);
 
@@ -58,7 +72,13 @@ public class MySwipeableItemAdapter
         void onItemViewClicked(View v, boolean pinned);
     }
 
+    /**
+     * class MyviewHolder
+     */
     public static class MyViewHolder extends AbstractSwipeableItemViewHolder {
+        /**
+         * this is a function of
+         */
         public FrameLayout mContainer;
         public TextView money;
         public TextView remark;
@@ -81,6 +101,14 @@ public class MySwipeableItemAdapter
             return mContainer;
         }
     }
+
+    /**
+     *
+     * @param inContext
+     * @param records
+     * @param onItemDeleteListener
+     * @param onItemClickListener
+     */
 
     public MySwipeableItemAdapter(Context inContext, List<CoCoinRecord> records, final OnItemDeleteListener onItemDeleteListener, OnItemClickListener onItemClickListener) {
         mContext = inContext;
@@ -279,7 +307,14 @@ public class MySwipeableItemAdapter
         }
     }
 
+    /**
+     * SwipeResultActionRemoveItem extends SwipeRightResultAction class
+     */
     public static class SwipeRightResultAction extends SwipeResultActionRemoveItem {
+
+        /*
+        some declarations
+         */
 
         private OnItemDeleteListener onItemDeleteListener;
         private MySwipeableItemAdapter mAdapter;
@@ -357,11 +392,23 @@ public class MySwipeableItemAdapter
 
     }
 
+    /**
+     * a interface
+     */
     public interface OnItemDeleteListener {
+        /*
+        execute a method
+         */
         void onSelectSumChanged();
     }
 
+    /**
+     * a interface
+     */
     public interface OnItemClickListener {
+        /*
+        execute a method
+         */
         void onItemClick(int position);
     }
 }

@@ -37,10 +37,12 @@ public class TagViewFragment extends Fragment {
 
     private Context mContext;
 
+    //TO-DO CONTROL HERE
     public static TagViewFragment newInstance(int position) {
         TagViewFragment fragment = new TagViewFragment();
         Bundle args = new Bundle();
-        args.putInt("POSITION", position);
+        int count = position;
+        args.putInt("POSITION", count);
         fragment.setArguments(args);
         return fragment;
     }

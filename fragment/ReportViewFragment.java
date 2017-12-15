@@ -299,6 +299,108 @@ public class ReportViewFragment extends Fragment
     private MaterialDialog dialog;
     private View dialogView;
     private MyGridView myGridView;
+
+    public void checkLang(String text,SliceValue sliceValue, double percent){
+        if ("zh".equals(CoCoinUtil.GetLanguage())) {
+            text = CoCoinUtil.GetSpendString((int) sliceValue.getValue()) +
+                    CoCoinUtil.GetPercentString(percent) + "\n" +
+                    "于" + CoCoinUtil.GetTagName(tagId);
+        } else {
+            text = CoCoinUtil.GetSpendString((int) sliceValue.getValue())
+                    + " (takes " + String.format("%.2f", percent) + "%)\n"
+                    + "in " + CoCoinUtil.GetTagName(tagId);
+        }
+        if ("zh".equals(CoCoinUtil.GetLanguage())) {
+            if (selectYear) {
+                dialogTitle = from.get(Calendar.YEAR) + "年" + "\n" +
+                        CoCoinUtil.GetSpendString((int) sliceValue.getValue()) +
+                        "于" + CoCoinUtil.GetTagName(tagId);
+            } else {
+                dialogTitle = from.get(Calendar.YEAR) + "年" + (from.get(Calendar.MONTH) + 1) + "月" + "\n" +
+                        CoCoinUtil.GetSpendString((int) sliceValue.getValue()) +
+                        "于" + CoCoinUtil.GetTagName(tagId);
+            }
+        } else {
+            if (selectYear) {
+                dialogTitle = CoCoinUtil.GetSpendString((int) sliceValue.getValue()) + " in " + from.get(Calendar.YEAR) + "\n" +
+                        "on " + CoCoinUtil.GetTagName(tagId);
+            } else {
+                dialogTitle = CoCoinUtil.GetSpendString((int) sliceValue.getValue()) + " in " + CoCoinUtil.GetMonthShort(from.get(Calendar.MONTH) + 1) + " " + from.get(Calendar.YEAR) + "\n" +
+                        "on " + CoCoinUtil.GetTagName(tagId);
+            }
+        }
+    }
+
+    public void checkSelectTime(){
+        if (RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size() != 0) {
+            emptyTip.setText(mContext.getResources().getString(R.string.report_view_please_select_data));
+        } else {
+            emptyTip.setText(mContext.getResources().getString(R.string.report_view_no_data));
+            isEmpty = true;
+        }
+    }
+
+
+    public void controlDate(String text, PointValue value, double percent){
+        if ("zh".equals(CoCoinUtil.GetLanguage())) {
+            if (selectYear) {
+                text = "在" + reportYear + " " + CoCoinUtil.getInstance().GetMonthShort((int)value.getX() + 1) + "\n" +
+                        CoCoinUtil.GetSpendString((int) value.getY()) +
+                        CoCoinUtil.GetPercentString(percent);
+            } else {
+                text = "在" + CoCoinUtil.getInstance().GetMonthShort(reportMonth) + " " + ((int)value.getX() + 1) + CoCoinUtil.getInstance().GetWhetherFuck() + "\n" +
+                        CoCoinUtil.GetSpendString((int) value.getY()) +
+                        CoCoinUtil.GetPercentString(percent);
+            }
+        } else {
+            if (selectYear) {
+                text = CoCoinUtil.GetSpendString((int) value.getY()) +
+                        CoCoinUtil.GetPercentString(percent) + "\n" +
+                        "in " + reportYear + " " + CoCoinUtil.getInstance().GetMonthShort((int)value.getX() + 1);
+            } else {
+                text = CoCoinUtil.GetSpendString((int) value.getY()) +
+                        CoCoinUtil.GetPercentString(percent) + "\n" +
+                        "on " + CoCoinUtil.getInstance().GetMonthShort(reportMonth) + " " + ((int)value.getX() + 1) + CoCoinUtil.getInstance().GetWhetherFuck();
+            }
+        }
+        if ("zh".equals(CoCoinUtil.GetLanguage())) {
+            if (selectYear) {
+                dialogTitle = "在" + reportYear + " " + CoCoinUtil.getInstance().GetMonthShort((int)value.getX() + 1) + "\n" +
+                        CoCoinUtil.GetSpendString((int) value.getY()) +
+                        CoCoinUtil.GetPercentString(percent);
+            } else {
+                dialogTitle = "在" + CoCoinUtil.getInstance().GetMonthShort(reportMonth) + " " + ((int)value.getX() + 1) + CoCoinUtil.getInstance().GetWhetherFuck() + "\n" +
+                        CoCoinUtil.GetSpendString((int) value.getY()) +
+                        CoCoinUtil.GetPercentString(percent);
+            }
+        } else {
+            if (selectYear) {
+                dialogTitle = CoCoinUtil.GetSpendString((int) value.getY()) +
+                        CoCoinUtil.GetPercentString(percent) + "\n" +
+                        "in " + reportYear + " " + CoCoinUtil.getInstance().GetMonthShort((int)value.getX() + 1);
+            } else {
+                dialogTitle = CoCoinUtil.GetSpendString((int) value.getY()) +
+                        CoCoinUtil.GetPercentString(percent) + "\n" +
+                        "on " + CoCoinUtil.getInstance().GetMonthShort(reportMonth) + " " + ((int)value.getX() + 1) + CoCoinUtil.getInstance().GetWhetherFuck();
+            }
+        }
+    }
+
+    public void setDate(Calendar tempFrom, Calendar tempTo, PointValue value){
+        if (selectYear) {
+            tempFrom.set(reportYear, (int)value.getX(), 1, 0, 0, 0);
+            tempFrom.add(Calendar.SECOND, 0);
+            tempTo.set(reportYear, (int)value.getX(), tempFrom.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59);
+            tempTo.add(Calendar.SECOND, 0);
+        } else {
+            tempFrom.set(reportYear, reportMonth - 1, (int)value.getX() + 1, 0, 0, 0);
+            tempFrom.add(Calendar.SECOND, 0);
+            tempTo.set(reportYear, reportMonth - 1, (int)value.getX() + 1, 23, 59, 59);
+            tempTo.add(Calendar.SECOND, 0);
+        }
+    }
+
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -328,37 +430,10 @@ public class ReportViewFragment extends Fragment
             @Override
             public void onValueSelected(int p, SliceValue sliceValue) {
                 // snack bar
-                String text;
+                String text = "";
                 tagId = Integer.valueOf(String.valueOf(sliceValue.getLabelAsChars()));
                 double percent = sliceValue.getValue() / expense * 100;
-                if ("zh".equals(CoCoinUtil.GetLanguage())) {
-                    text = CoCoinUtil.GetSpendString((int) sliceValue.getValue()) +
-                            CoCoinUtil.GetPercentString(percent) + "\n" +
-                            "于" + CoCoinUtil.GetTagName(tagId);
-                } else {
-                    text = CoCoinUtil.GetSpendString((int) sliceValue.getValue())
-                            + " (takes " + String.format("%.2f", percent) + "%)\n"
-                            + "in " + CoCoinUtil.GetTagName(tagId);
-                }
-                if ("zh".equals(CoCoinUtil.GetLanguage())) {
-                    if (selectYear) {
-                        dialogTitle = from.get(Calendar.YEAR) + "年" + "\n" +
-                                CoCoinUtil.GetSpendString((int) sliceValue.getValue()) +
-                                "于" + CoCoinUtil.GetTagName(tagId);
-                    } else {
-                        dialogTitle = from.get(Calendar.YEAR) + "年" + (from.get(Calendar.MONTH) + 1) + "月" + "\n" +
-                                CoCoinUtil.GetSpendString((int) sliceValue.getValue()) +
-                                "于" + CoCoinUtil.GetTagName(tagId);
-                    }
-                } else {
-                    if (selectYear) {
-                        dialogTitle = CoCoinUtil.GetSpendString((int) sliceValue.getValue()) + " in " + from.get(Calendar.YEAR) + "\n" +
-                                "on " + CoCoinUtil.GetTagName(tagId);
-                    } else {
-                        dialogTitle = CoCoinUtil.GetSpendString((int) sliceValue.getValue()) + " in " + CoCoinUtil.GetMonthShort(from.get(Calendar.MONTH) + 1) + " " + from.get(Calendar.YEAR) + "\n" +
-                                "on " + CoCoinUtil.GetTagName(tagId);
-                    }
-                }
+                checkLang(text,sliceValue, percent);
                 Snackbar snackbar =
                         Snackbar
                                 .with(mContext)
@@ -401,12 +476,8 @@ public class ReportViewFragment extends Fragment
 
         emptyTip = (TextView)view.findViewById(R.id.empty_tip);
         emptyTip.setTypeface(CoCoinUtil.GetTypeface());
-        if (RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size() != 0) {
-            emptyTip.setText(mContext.getResources().getString(R.string.report_view_please_select_data));
-        } else {
-            emptyTip.setText(mContext.getResources().getString(R.string.report_view_no_data));
-            isEmpty = true;
-        }
+
+        checkSelectTime();
 
         highestTagLayout = (LinearLayout)view.findViewById(R.id.highest_tag_layout);
         highestTagLayout.setVisibility(View.GONE);
@@ -460,63 +531,16 @@ public class ReportViewFragment extends Fragment
             @Override
             public void onValueSelected(int lineIndex, int pointIndex, PointValue value) {
                 // snack bar
-                String text;
+                String text = "";
                 double percent = value.getY() / expense * 100;
-                if ("zh".equals(CoCoinUtil.GetLanguage())) {
-                    if (selectYear) {
-                        text = "在" + reportYear + " " + CoCoinUtil.getInstance().GetMonthShort((int)value.getX() + 1) + "\n" +
-                                CoCoinUtil.GetSpendString((int) value.getY()) +
-                                CoCoinUtil.GetPercentString(percent);
-                    } else {
-                        text = "在" + CoCoinUtil.getInstance().GetMonthShort(reportMonth) + " " + ((int)value.getX() + 1) + CoCoinUtil.getInstance().GetWhetherFuck() + "\n" +
-                                CoCoinUtil.GetSpendString((int) value.getY()) +
-                                CoCoinUtil.GetPercentString(percent);
-                    }
-                } else {
-                    if (selectYear) {
-                        text = CoCoinUtil.GetSpendString((int) value.getY()) +
-                                CoCoinUtil.GetPercentString(percent) + "\n" +
-                                "in " + reportYear + " " + CoCoinUtil.getInstance().GetMonthShort((int)value.getX() + 1);
-                    } else {
-                        text = CoCoinUtil.GetSpendString((int) value.getY()) +
-                                CoCoinUtil.GetPercentString(percent) + "\n" +
-                                "on " + CoCoinUtil.getInstance().GetMonthShort(reportMonth) + " " + ((int)value.getX() + 1) + CoCoinUtil.getInstance().GetWhetherFuck();
-                    }
-                }
-                if ("zh".equals(CoCoinUtil.GetLanguage())) {
-                    if (selectYear) {
-                        dialogTitle = "在" + reportYear + " " + CoCoinUtil.getInstance().GetMonthShort((int)value.getX() + 1) + "\n" +
-                                CoCoinUtil.GetSpendString((int) value.getY()) +
-                                CoCoinUtil.GetPercentString(percent);
-                    } else {
-                        dialogTitle = "在" + CoCoinUtil.getInstance().GetMonthShort(reportMonth) + " " + ((int)value.getX() + 1) + CoCoinUtil.getInstance().GetWhetherFuck() + "\n" +
-                                CoCoinUtil.GetSpendString((int) value.getY()) +
-                                CoCoinUtil.GetPercentString(percent);
-                    }
-                } else {
-                    if (selectYear) {
-                        dialogTitle = CoCoinUtil.GetSpendString((int) value.getY()) +
-                                CoCoinUtil.GetPercentString(percent) + "\n" +
-                                "in " + reportYear + " " + CoCoinUtil.getInstance().GetMonthShort((int)value.getX() + 1);
-                    } else {
-                        dialogTitle = CoCoinUtil.GetSpendString((int) value.getY()) +
-                                CoCoinUtil.GetPercentString(percent) + "\n" +
-                                "on " + CoCoinUtil.getInstance().GetMonthShort(reportMonth) + " " + ((int)value.getX() + 1) + CoCoinUtil.getInstance().GetWhetherFuck();
-                    }
-                }
+
+                controlDate(text, value, percent);
+
                 final Calendar tempFrom = Calendar.getInstance();
                 final Calendar tempTo = Calendar.getInstance();
-                if (selectYear) {
-                    tempFrom.set(reportYear, (int)value.getX(), 1, 0, 0, 0);
-                    tempFrom.add(Calendar.SECOND, 0);
-                    tempTo.set(reportYear, (int)value.getX(), tempFrom.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59);
-                    tempTo.add(Calendar.SECOND, 0);
-                } else {
-                    tempFrom.set(reportYear, reportMonth - 1, (int)value.getX() + 1, 0, 0, 0);
-                    tempFrom.add(Calendar.SECOND, 0);
-                    tempTo.set(reportYear, reportMonth - 1, (int)value.getX() + 1, 23, 59, 59);
-                    tempTo.add(Calendar.SECOND, 0);
-                }
+
+                setDate(tempFrom, tempTo, value);
+
                 Snackbar snackbar =
                         Snackbar
                                 .with(mContext)

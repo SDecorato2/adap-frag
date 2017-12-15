@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -21,7 +20,14 @@ import com.nightonke.saver.util.CoCoinUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 /**
- * Created by 伟平 on 2015/10/27.
+ * @Created by 伟平 on 2015/11/13.
+ * @Version 2.1
+ *
+ */
+
+
+/**
+ * This class produce some results
  */
 
 public class EditMoneyFragment extends Fragment {
@@ -29,8 +35,15 @@ public class EditMoneyFragment extends Fragment {
     private int fragmentPosition;
     private int tagId = -1;
 
+    /**
+     * some variables
+     */
+
     public MaterialEditText editView;
 
+    /*
+    other variables
+     */
     public ImageView tagImage;
     public TextView tagName;
 
@@ -99,7 +112,11 @@ public class EditMoneyFragment extends Fragment {
         return mView;
     }
 
+    /**
+     * this is a interface called OnTagItemSelectedListener
+     */
     public interface OnTagItemSelectedListener {
+        //a method
         void onTagItemPicked(int position);
     }
 

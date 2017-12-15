@@ -132,22 +132,7 @@ public class TodayViewRecyclerViewAdapter
         setDateString();
 
         if (!IS_EMPTY) {
-            if (fragmentPosition == TODAY || fragmentPosition == YESTERDAY) {
-                columnNumber = 24;
-                axis_date = Calendar.HOUR_OF_DAY;
-            }
-            if (fragmentPosition == THIS_WEEK || fragmentPosition == LAST_WEEK) {
-                columnNumber = 7;
-                axis_date = Calendar.DAY_OF_WEEK;
-            }
-            if (fragmentPosition == THIS_MONTH || fragmentPosition == LAST_MONTH) {
-                columnNumber = allData.get(0).getCalendar().getActualMaximum(Calendar.DAY_OF_MONTH);
-                axis_date = Calendar.DAY_OF_MONTH;
-            }
-            if (fragmentPosition == THIS_YEAR || fragmentPosition == LAST_YEAR) {
-                columnNumber = 12;
-                axis_date = Calendar.MONTH;
-            }
+           FragmentPosition();
 
             TagExpanse = new TreeMap<>();
             Expanse = new HashMap<>();
@@ -159,8 +144,33 @@ public class TodayViewRecyclerViewAdapter
                 TagExpanse.put(recordManager.TAGS.get(j).getId(), Double.valueOf(0));
                 Expanse.put(recordManager.TAGS.get(j).getId(), new ArrayList<CoCoinRecord>());
             }
+			TagExpanse();	
+            
+            TagExpanse = CoCoinUtil.SortTreeMapByValues(TagExpanse);
+        }
+    }
 
-            size = allData.size();
+	private void FragmentPosition(){
+	 if (fragmentPosition == TODAY || fragmentPosition == YESTERDAY) {
+			columnNumber = 24;
+			axis_date = Calendar.HOUR_OF_DAY;
+		}
+		if (fragmentPosition == THIS_WEEK || fragmentPosition == LAST_WEEK) {
+			columnNumber = 7;
+			axis_date = Calendar.DAY_OF_WEEK;
+		}
+		if (fragmentPosition == THIS_MONTH || fragmentPosition == LAST_MONTH) {
+			columnNumber = allData.get(0).getCalendar().getActualMaximum(Calendar.DAY_OF_MONTH);
+			axis_date = Calendar.DAY_OF_MONTH;
+		}
+		if (fragmentPosition == THIS_YEAR || fragmentPosition == LAST_YEAR) {
+			columnNumber = 12;
+			axis_date = Calendar.MONTH;
+		}
+	}
+	
+	private void TagExpanse(){
+		size = allData.size();
             for (int i = 0; i < size; i++) {
                 CoCoinRecord coCoinRecord = allData.get(i);
                 TagExpanse.put(coCoinRecord.getTag(),
@@ -181,11 +191,9 @@ public class TodayViewRecyclerViewAdapter
                             += coCoinRecord.getMoney();
                 }
             }
-
-            TagExpanse = CoCoinUtil.SortTreeMapByValues(TagExpanse);
-        }
-    }
-
+	}
+	
+	
     @Override
     public int getItemViewType(int position) {
         if (fragmentPosition == TODAY || fragmentPosition == YESTERDAY) {
@@ -320,8 +328,93 @@ public class TodayViewRecyclerViewAdapter
 
                     final List<Column> columns = new ArrayList<>();
                     final ColumnChartData columnChartData = new ColumnChartData(columns);
+					
+					twoControlButtonOfPie(); //6
+				
 
-                    if (!(fragmentPosition == TODAY || fragmentPosition == YESTERDAY)) {
+// set value touch listener of pie//////////////////////////////////////////////////////////////////
+                    holder.pie.setOnValueTouchListener(new PieChartOnValueSelectListener() {
+                        @Override
+                        public void onValueSelected(int p, SliceValue sliceValue) {
+                            
+							setValueTouchListnerOfPie();
+
+                            setHistogramData();
+                        }
+
+                        @Override
+                        public void onValueDeselected() {
+
+                        }
+                    });
+
+                    setValueTouchListnerHistogram();
+
+// set the listener of the reset button/////////////////////////////////////////////////////////////
+                    setListnerRestButton();
+
+// set the listener of the show all button//////////////////////////////////////////////////////////
+                    holder.all.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ((FragmentActivity)mContext).getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .add(new RecordCheckDialogFragment(
+                                            mContext, allData, getAllDataDialogTitle()), "MyDialog")
+                                    .commit();
+                        }
+                    });
+
+                }
+
+                break;
+
+            case TYPE_BODY:
+
+                holder.tagImage.setImageResource(
+                        CoCoinUtil.GetTagIcon(allData.get(position - 1).getTag()));
+                holder.money.setText((int) allData.get(position - 1).getMoney() + "");
+                holder.money.setTypeface(CoCoinUtil.typefaceLatoLight);
+                holder.cell_date.setText(allData.get(position - 1).getCalendarString());
+                holder.cell_date.setTypeface(CoCoinUtil.typefaceLatoLight);
+                holder.remark.setText(allData.get(position - 1).getRemark());
+                holder.remark.setTypeface(CoCoinUtil.typefaceLatoLight);
+                holder.index.setText(position + "");
+                holder.index.setTypeface(CoCoinUtil.typefaceLatoLight);
+                holder.layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String subTitle;
+                        double spend = allData.get(position - 1).getMoney();
+                        int tagId = allData.get(position - 1).getTag();
+                        if ("zh".equals(CoCoinUtil.GetLanguage())) {
+                            subTitle = CoCoinUtil.GetSpendString((int)spend) +
+                                    "于" + CoCoinUtil.GetTagName(tagId);
+                        } else {
+                            subTitle = "Spend " + (int)spend +
+                                    "in " + CoCoinUtil.GetTagName(tagId);
+                        }
+                        dialog = new MaterialDialog.Builder(mContext)
+                                .icon(CoCoinUtil.GetTagIconDrawable(allData.get(position - 1).getTag()))
+                                .limitIconToDefaultSize()
+                                .title(subTitle)
+                                .customView(R.layout.dialog_a_record, true)
+                                .positiveText(R.string.get)
+                                .show();
+                        dialogView = dialog.getCustomView();
+                        TextView remark = (TextView)dialogView.findViewById(R.id.remark);
+                        TextView date = (TextView)dialogView.findViewById(R.id.date);
+                        remark.setText(allData.get(position - 1).getRemark());
+                        date.setText(allData.get(position - 1).getCalendarString());
+                    }
+                });
+
+                break;
+        }
+    }
+	
+	private void twoControlButtonOfPie{
+		if (!(fragmentPosition == TODAY || fragmentPosition == YESTERDAY)) {
 
 
                         for (int i = 0; i < columnNumber; i++) {
@@ -404,12 +497,10 @@ public class TodayViewRecyclerViewAdapter
                         holder.dateBottom.setVisibility(View.GONE);
                         holder.reset.setVisibility(View.GONE);
                     }
-
-// set value touch listener of pie//////////////////////////////////////////////////////////////////
-                    holder.pie.setOnValueTouchListener(new PieChartOnValueSelectListener() {
-                        @Override
-                        public void onValueSelected(int p, SliceValue sliceValue) {
-                            // snack bar
+	}
+	
+	private void setValueTouchListnerOfPie(){
+		// snack bar
                             RecordManager recordManager
                                     = RecordManager.getInstance(mContext.getApplicationContext());
                             String text;
@@ -457,8 +548,10 @@ public class TodayViewRecyclerViewAdapter
                             } else {
                                 lastPieSelectedPosition = p;
                             }
-
-                            if (!(fragmentPosition == TODAY || fragmentPosition == YESTERDAY)) {
+	}
+	
+	private void setHistogramData(){
+		if (!(fragmentPosition == TODAY || fragmentPosition == YESTERDAY)) {
 
 // histogram data///////////////////////////////////////////////////////////////////////////////////
                                 float[] targets = new float[columnNumber];
@@ -493,15 +586,10 @@ public class TodayViewRecyclerViewAdapter
                                 }
                                 holder.histogram.startDataAnimation();
                             }
-                        }
+	}
 
-                        @Override
-                        public void onValueDeselected() {
-
-                        }
-                    });
-
-                    if (!(fragmentPosition == TODAY || fragmentPosition == YESTERDAY)) {
+	private void setValueTouchListnerHistogram(){
+		if (!(fragmentPosition == TODAY || fragmentPosition == YESTERDAY)) {
 
 // set value touch listener of histogram////////////////////////////////////////////////////////////
                         holder.histogram.setOnValueTouchListener(
@@ -559,9 +647,10 @@ public class TodayViewRecyclerViewAdapter
                             }
                         });
                     }
-
-// set the listener of the reset button/////////////////////////////////////////////////////////////
-                    if (!(fragmentPosition == TODAY || fragmentPosition == YESTERDAY)) {
+	}
+	
+	private void setListnerRestButton(){
+		if (!(fragmentPosition == TODAY || fragmentPosition == YESTERDAY)) {
                         holder.reset.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -581,67 +670,8 @@ public class TodayViewRecyclerViewAdapter
                             }
                         });
                     }
-
-// set the listener of the show all button//////////////////////////////////////////////////////////
-                    holder.all.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ((FragmentActivity)mContext).getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .add(new RecordCheckDialogFragment(
-                                            mContext, allData, getAllDataDialogTitle()), "MyDialog")
-                                    .commit();
-                        }
-                    });
-
-                }
-
-                break;
-
-            case TYPE_BODY:
-
-                holder.tagImage.setImageResource(
-                        CoCoinUtil.GetTagIcon(allData.get(position - 1).getTag()));
-                holder.money.setText((int) allData.get(position - 1).getMoney() + "");
-                holder.money.setTypeface(CoCoinUtil.typefaceLatoLight);
-                holder.cell_date.setText(allData.get(position - 1).getCalendarString());
-                holder.cell_date.setTypeface(CoCoinUtil.typefaceLatoLight);
-                holder.remark.setText(allData.get(position - 1).getRemark());
-                holder.remark.setTypeface(CoCoinUtil.typefaceLatoLight);
-                holder.index.setText(position + "");
-                holder.index.setTypeface(CoCoinUtil.typefaceLatoLight);
-                holder.layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String subTitle;
-                        double spend = allData.get(position - 1).getMoney();
-                        int tagId = allData.get(position - 1).getTag();
-                        if ("zh".equals(CoCoinUtil.GetLanguage())) {
-                            subTitle = CoCoinUtil.GetSpendString((int)spend) +
-                                    "于" + CoCoinUtil.GetTagName(tagId);
-                        } else {
-                            subTitle = "Spend " + (int)spend +
-                                    "in " + CoCoinUtil.GetTagName(tagId);
-                        }
-                        dialog = new MaterialDialog.Builder(mContext)
-                                .icon(CoCoinUtil.GetTagIconDrawable(allData.get(position - 1).getTag()))
-                                .limitIconToDefaultSize()
-                                .title(subTitle)
-                                .customView(R.layout.dialog_a_record, true)
-                                .positiveText(R.string.get)
-                                .show();
-                        dialogView = dialog.getCustomView();
-                        TextView remark = (TextView)dialogView.findViewById(R.id.remark);
-                        TextView date = (TextView)dialogView.findViewById(R.id.date);
-                        remark.setText(allData.get(position - 1).getRemark());
-                        date.setText(allData.get(position - 1).getCalendarString());
-                    }
-                });
-
-                break;
-        }
-    }
-
+	}
+	
 // view holder class////////////////////////////////////////////////////////////////////////////////
     public static class viewHolder extends RecyclerView.ViewHolder {
         @Optional

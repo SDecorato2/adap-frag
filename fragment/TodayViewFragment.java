@@ -51,10 +51,13 @@ public class TodayViewFragment extends Fragment {
     static final int THIS_YEAR = 6;
     static final int LAST_YEAR = 7;
 
+
+    //TO-DO CONTROL HERE
     public static TodayViewFragment newInstance(int position) {
         TodayViewFragment fragment = new TodayViewFragment();
         Bundle args = new Bundle();
-        args.putInt("POSITION", position);
+        int k = position;
+        args.putInt("POSITION", k);
         fragment.setArguments(args);
         return fragment;
     }

@@ -1,6 +1,5 @@
 package com.nightonke.saver.adapter;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,16 +17,28 @@ import com.nightonke.saver.model.Tag;
 import com.nightonke.saver.util.CoCoinUtil;
 
 import java.util.ArrayList;
+/**
+ * @Created by 伟平 on 2015/11/13.
+ * @Version 2.1
+ *
+ */
+
 
 /**
- * Created by 伟平 on 2015/11/7.
+ * This class produce some results
  */
+
 
 public class TagDraggableItemAdapter
         extends RecyclerView.Adapter<TagDraggableItemAdapter.MyViewHolder>
         implements DraggableItemAdapter<TagDraggableItemAdapter.MyViewHolder> {
 
+    /*
+    declarations of variables
+     */
+
     private static final String TAG = "TagDraggableItemAdapter";
+
 
     private ArrayList<Tag> tags;
     private boolean changed;
@@ -36,7 +47,14 @@ public class TagDraggableItemAdapter
     private interface Draggable extends DraggableItemConstants {
     }
 
+    /**
+     * class MyViewHolder extends AbstractDraggableItemViewHolder
+     */
+
     public static class MyViewHolder extends AbstractDraggableItemViewHolder {
+        /**
+         * this is a function of
+         */
         public FrameLayout mContainer;
         public ImageView tagImage;
         public TextView tagName;
