@@ -30,6 +30,9 @@ import com.nightonke.saver.util.ViewUtil;
 
 import java.util.ArrayList;
 
+/**
+ * SwipeableItemAdapter public class
+ */
 public class RecordExpandableSwipeableItemAdapter
         extends AbstractExpandableItemAdapter<RecordExpandableSwipeableItemAdapter.MyGroupViewHolder,
         RecordExpandableSwipeableItemAdapter.MyChildViewHolder>
@@ -49,7 +52,9 @@ public class RecordExpandableSwipeableItemAdapter
     private EventListener mEventListener;
     private View.OnClickListener mItemViewOnClickListener;
     private View.OnClickListener mSwipeableViewContainerOnClickListener;
-
+/**
+ * interface EventListener 
+ */
     public interface EventListener {
         void onGroupItemRemoved(int groupPosition);
 
@@ -61,14 +66,31 @@ public class RecordExpandableSwipeableItemAdapter
 
         void onItemViewClicked(View v, boolean pinned);
     }
-
+/**
+ * ViewHolder static class
+ */
     public static abstract class MyBaseViewHolder
             extends AbstractDraggableSwipeableItemViewHolder implements ExpandableItemViewHolder {
+        /**
+         * FrameLayout 
+         */
         public FrameLayout mContainer;
+
+        /**
+         * View 
+         */
         public View mDragHandle;
+
+        /**
+         * TextView
+         */
         public TextView mTextView;
+
         private int mExpandStateFlags;
 
+        /**
+         * MyBaseViewHolder
+         */
         public MyBaseViewHolder(View v) {
             super(v);
             mContainer = (FrameLayout) v.findViewById(R.id.container);
@@ -92,6 +114,9 @@ public class RecordExpandableSwipeableItemAdapter
         }
     }
 
+    /**
+     * MyGroupViewHolder static class
+     */
     public static class MyGroupViewHolder extends MyBaseViewHolder {
         public ExpandableItemIndicator mIndicator;
 
@@ -101,12 +126,18 @@ public class RecordExpandableSwipeableItemAdapter
         }
     }
 
+    /**
+     * MyChildViewHolder static class
+     */
     public static class MyChildViewHolder extends MyBaseViewHolder {
         public MyChildViewHolder(View v) {
             super(v);
         }
     }
 
+    /**
+     * public RecordExpandableSwipeableItemAdapter
+     */
     public RecordExpandableSwipeableItemAdapter(
             RecyclerViewExpandableItemManager expandableItemManager,
             ArrayList<ArrayList<Integer>> inList) {
@@ -389,11 +420,16 @@ public class RecordExpandableSwipeableItemAdapter
                 }
         }
     }
-
+    /**
+     *public event Listner
+     */
     public EventListener getEventListener() {
         return mEventListener;
     }
-
+    
+    /**
+     * public setEventListener
+     */
     public void setEventListener(EventListener eventListener) {
         mEventListener = eventListener;
     }
