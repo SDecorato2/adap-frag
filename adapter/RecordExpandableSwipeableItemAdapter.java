@@ -118,8 +118,13 @@ public class RecordExpandableSwipeableItemAdapter
      * MyGroupViewHolder static class
      */
     public static class MyGroupViewHolder extends MyBaseViewHolder {
+        /**
+         * ExpandableItemIndicator
+         */
         public ExpandableItemIndicator mIndicator;
-
+        /**
+         * MyGroupViewHolder
+         */
         public MyGroupViewHolder(View v) {
             super(v);
             mIndicator = (ExpandableItemIndicator) v.findViewById(R.id.indicator);
@@ -130,6 +135,9 @@ public class RecordExpandableSwipeableItemAdapter
      * MyChildViewHolder static class
      */
     public static class MyChildViewHolder extends MyBaseViewHolder {
+        /**
+         * MyChildViewHolder
+         */
         public MyChildViewHolder(View v) {
             super(v);
         }
@@ -145,12 +153,18 @@ public class RecordExpandableSwipeableItemAdapter
         mExpandableItemManager = expandableItemManager;
         mItemViewOnClickListener = new View.OnClickListener() {
             @Override
+            /**
+             * onClick
+             */
             public void onClick(View v) {
                 onItemViewClick(v);
             }
         };
         mSwipeableViewContainerOnClickListener = new View.OnClickListener() {
             @Override
+            /**
+             * onClick
+             */
             public void onClick(View v) {
                 onSwipeableViewContainerClick(v);
             }
@@ -174,36 +188,57 @@ public class RecordExpandableSwipeableItemAdapter
     }
 
     @Override
+    /**
+     * getGroupCount
+     */
     public int getGroupCount() {
         return list.size();
     }
 
     @Override
+    /**
+     * getChildCount
+     */
     public int getChildCount(int groupPosition) {
         return list.get(groupPosition).size();
     }
 
     @Override
+    /**
+     * getGroupId
+     */
     public long getGroupId(int groupPosition) {
         return list.get(groupPosition).get(0);  // get id
     }
 
     @Override
+    /**
+     * getChildId
+     */
     public long getChildId(int groupPosition, int childPosition) {
         return list.get(groupPosition).get(childPosition);  // get id
     }
 
     @Override
+    /**
+     * getGroupItemViewType
+     */
     public int getGroupItemViewType(int groupPosition) {
         return 0;
     }
 
     @Override
+    /**
+     * getGroupItemViewType
+     */
     public int getChildItemViewType(int groupPosition, int childPosition) {
         return 0;
     }
 
     @Override
+    /**
+     * MyGroupViewHolder
+     */
     public MyGroupViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         final View v = inflater.inflate(R.layout.list_group_item_draggable, parent, false);
@@ -211,6 +246,9 @@ public class RecordExpandableSwipeableItemAdapter
     }
 
     @Override
+    /**
+     * MyChildViewHolder
+     */
     public MyChildViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         final View v = inflater.inflate(R.layout.list_item_draggable, parent, false);
@@ -218,6 +256,9 @@ public class RecordExpandableSwipeableItemAdapter
     }
 
     @Override
+    /**
+     * onBindGroupViewHolder
+     */
     public void onBindGroupViewHolder(MyGroupViewHolder holder, int groupPosition, int viewType) {
         // group item
         final ArrayList<Integer> item = list.get(groupPosition);
@@ -256,6 +297,9 @@ public class RecordExpandableSwipeableItemAdapter
     }
 
     @Override
+    /**
+     * onBindChildViewHolder
+     */
     public void onBindChildViewHolder(MyChildViewHolder holder,
                                       int groupPosition, int childPosition, int viewType) {
         // child item
@@ -285,6 +329,9 @@ public class RecordExpandableSwipeableItemAdapter
     }
 
     @Override
+    /**
+     * onCheckCanExpandOrCollapseGroup
+     */
     public boolean onCheckCanExpandOrCollapseGroup(
             MyGroupViewHolder holder, int groupPosition, int x, int y, boolean expand) {
         // check the item is *not* pinned
@@ -310,6 +357,9 @@ public class RecordExpandableSwipeableItemAdapter
     }
 
     @Override
+    /**
+     * onGetGroupItemSwipeReactionType
+     */
     public int onGetGroupItemSwipeReactionType(
             MyGroupViewHolder holder, int groupPosition, int x, int y) {
 //        if (onCheckGroupCanStartDrag(holder, groupPosition, x, y)) {
@@ -320,6 +370,9 @@ public class RecordExpandableSwipeableItemAdapter
     }
 
     @Override
+    /**
+     * onGetChildItemSwipeReactionType
+     */
     public int onGetChildItemSwipeReactionType(
             MyChildViewHolder holder, int groupPosition, int childPosition, int x, int y) {
 //        if (onCheckChildCanStartDrag(holder, groupPosition, childPosition, x, y)) {
@@ -330,6 +383,9 @@ public class RecordExpandableSwipeableItemAdapter
     }
 
     @Override
+    /**
+     * onSetGroupItemSwipeBackground
+     */
     public void onSetGroupItemSwipeBackground(
             MyGroupViewHolder holder, int groupPosition, int type) {
         int bgResId = 0;
@@ -349,6 +405,9 @@ public class RecordExpandableSwipeableItemAdapter
     }
 
     @Override
+    /**
+     * onSetChildItemSwipeBackground
+     */
     public void onSetChildItemSwipeBackground(
             MyChildViewHolder holder, int groupPosition, int childPosition, int type) {
         int bgResId = 0;
@@ -368,6 +427,9 @@ public class RecordExpandableSwipeableItemAdapter
     }
 
     @Override
+    /**
+     * SwipeResultAction
+     */
     public SwipeResultAction onSwipeGroupItem(
             MyGroupViewHolder holder, int groupPosition, int result) {
         switch (result) {
@@ -395,6 +457,9 @@ public class RecordExpandableSwipeableItemAdapter
     }
 
     @Override
+    /**
+     * SwipeResultAction
+     */
     public SwipeResultAction onSwipeChildItem(
             MyChildViewHolder holder, int groupPosition, int childPosition, int result) {
         switch (result) {
