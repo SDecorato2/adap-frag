@@ -1,30 +1,6 @@
 package com.nightonke.saver.adapter;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.balysv.materialripple.MaterialRippleLayout;
-import com.nightonke.saver.R;
-import com.nightonke.saver.fragment.RecordCheckDialogFragment;
-import com.nightonke.saver.model.CoCoinRecord;
-import com.nightonke.saver.model.RecordManager;
-import com.nightonke.saver.model.SettingManager;
-import com.nightonke.saver.util.CoCoinUtil;
-import com.nispok.snackbar.Snackbar;
-import com.nispok.snackbar.SnackbarManager;
-import com.nispok.snackbar.enums.SnackbarType;
-import com.nispok.snackbar.listeners.ActionClickListener;
-
-import net.steamcrafted.materialiconlib.MaterialIconView;
-
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -32,26 +8,41 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.swing.text.View;
+import javax.swing.text.html.ImageView;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.balysv.materialripple.MaterialRippleLayout;
+import com.nightonke.saver.R;
+import com.nightonke.saver.fragment.RecordCheckDialogFragment;
+import com.nightonke.saver.model.CoCoinRecord;
+import com.nightonke.saver.model.RecordManager;
+import com.nightonke.saver.util.CoCoinUtil;
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
+import com.nispok.snackbar.enums.SnackbarType;
+import com.nispok.snackbar.listeners.ActionClickListener;
+
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.Optional;
 import lecho.lib.hellocharts.listener.ColumnChartOnValueSelectListener;
-import lecho.lib.hellocharts.listener.PieChartOnValueSelectListener;
-import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Column;
-import lecho.lib.hellocharts.model.ColumnChartData;
-import lecho.lib.hellocharts.model.PieChartData;
 import lecho.lib.hellocharts.model.SelectedValue;
-import lecho.lib.hellocharts.model.SliceValue;
 import lecho.lib.hellocharts.model.SubcolumnValue;
 import lecho.lib.hellocharts.view.ColumnChartView;
 import lecho.lib.hellocharts.view.PieChartView;
+import net.steamcrafted.materialiconlib.MaterialIconView;
 
 /**
  * Created by 伟平 on 2015/10/20.
  */
-
 public class TodayViewRecyclerViewAdapter
         extends RecyclerView.Adapter<TodayViewRecyclerViewAdapter.viewHolder> {
 
@@ -115,6 +106,9 @@ public class TodayViewRecyclerViewAdapter
     private MaterialDialog dialog;
     private View dialogView;
 
+    /**
+     * TodayViewRecyclerViewAdapter
+     */
     public TodayViewRecyclerViewAdapter(int start, int end, Context context, int position) {
 
         mContext = context;
@@ -195,6 +189,9 @@ public class TodayViewRecyclerViewAdapter
 	
 	
     @Override
+    /**
+     * getItemViewType
+     */
     public int getItemViewType(int position) {
         if (fragmentPosition == TODAY || fragmentPosition == YESTERDAY) {
             return position == 0 ? TYPE_HEADER : TYPE_BODY;
@@ -203,6 +200,9 @@ public class TodayViewRecyclerViewAdapter
     }
 
     @Override
+    /**
+     * getItemCount
+     */
     public int getItemCount() {
         if (fragmentPosition == TODAY || fragmentPosition == YESTERDAY) {
             return allData.size() + 1;
@@ -211,6 +211,9 @@ public class TodayViewRecyclerViewAdapter
     }
 
     @Override
+    /**
+     * TodayViewRecyclerViewAdapter
+     */
     public TodayViewRecyclerViewAdapter.viewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
 
@@ -233,6 +236,9 @@ public class TodayViewRecyclerViewAdapter
     }
 
     @Override
+    /**
+     * onBindViewHolder
+     */
     public void onBindViewHolder(final viewHolder holder, final int position) {
 
         switch (getItemViewType(position)) {
@@ -292,6 +298,9 @@ public class TodayViewRecyclerViewAdapter
                     holder.iconRight.setVisibility(View.VISIBLE);
                     holder.iconRight.setOnClickListener(new View.OnClickListener() {
                         @Override
+                        /**
+                         * onClick
+                         */
                         public void onClick(View v) {
                             if (lastPieSelectedPosition != -1) {
                                 pieSelectedPosition = lastPieSelectedPosition;
@@ -310,6 +319,9 @@ public class TodayViewRecyclerViewAdapter
                     holder.iconLeft.setVisibility(View.VISIBLE);
                     holder.iconLeft.setOnClickListener(new View.OnClickListener() {
                         @Override
+                        /**
+                         * onClick
+                         */
                         public void onClick(View v) {
                             if (lastPieSelectedPosition != -1) {
                                 pieSelectedPosition = lastPieSelectedPosition;
@@ -335,6 +347,9 @@ public class TodayViewRecyclerViewAdapter
 // set value touch listener of pie//////////////////////////////////////////////////////////////////
                     holder.pie.setOnValueTouchListener(new PieChartOnValueSelectListener() {
                         @Override
+                        /**
+                         * onValueSelected
+                         */
                         public void onValueSelected(int p, SliceValue sliceValue) {
                             
 							setValueTouchListnerOfPie();
@@ -343,6 +358,9 @@ public class TodayViewRecyclerViewAdapter
                         }
 
                         @Override
+                        /**
+                         * onValueDeselected
+                         */
                         public void onValueDeselected() {
 
                         }
@@ -356,6 +374,9 @@ public class TodayViewRecyclerViewAdapter
 // set the listener of the show all button///////////////////
                     holder.all.setOnClickListener(new View.OnClickListener() {
                         @Override
+                        /**
+                         * onClick
+                         */
                         public void onClick(View v) {
                             ((FragmentActivity)mContext).getSupportFragmentManager()
                                     .beginTransaction()
@@ -383,6 +404,9 @@ public class TodayViewRecyclerViewAdapter
                 holder.index.setTypeface(CoCoinUtil.typefaceLatoLight);
                 holder.layout.setOnClickListener(new View.OnClickListener() {
                     @Override
+                    /**
+                     * onClick
+                     */
                     public void onClick(View v) {
                         String subTitle;
                         double spend = allData.get(position - 1).getMoney();
@@ -453,6 +477,9 @@ public class TodayViewRecyclerViewAdapter
                         holder.histogram_icon_left.setVisibility(View.VISIBLE);
                         holder.histogram_icon_left.setOnClickListener(new View.OnClickListener() {
                             @Override
+                            /**
+                             * onClick
+                             */
                             public void onClick(View v) {
                                 do {
                                     lastHistogramSelectedPosition
@@ -472,6 +499,9 @@ public class TodayViewRecyclerViewAdapter
                         holder.histogram_icon_right.setVisibility(View.VISIBLE);
                         holder.histogram_icon_right.setOnClickListener(new View.OnClickListener() {
                             @Override
+                            /**
+                             * onClick
+                             */
                             public void onClick(View v) {
                                 do {
                                     lastHistogramSelectedPosition
@@ -595,6 +625,9 @@ public class TodayViewRecyclerViewAdapter
                         holder.histogram.setOnValueTouchListener(
                                 new ColumnChartOnValueSelectListener() {
                             @Override
+                            /**
+                             * onValueSelected
+                             */
                             public void onValueSelected(int columnIndex,
                                                         int subcolumnIndex, SubcolumnValue value) {
                                 lastHistogramSelectedPosition = columnIndex;
@@ -642,6 +675,9 @@ public class TodayViewRecyclerViewAdapter
                             }
 
                             @Override
+                            /**
+                             * onValueDeselected
+                             */
                             public void onValueDeselected() {
 
                             }
@@ -653,6 +689,9 @@ public class TodayViewRecyclerViewAdapter
 		if (!(fragmentPosition == TODAY || fragmentPosition == YESTERDAY)) {
                         holder.reset.setOnClickListener(new View.OnClickListener() {
                             @Override
+                            /**
+                             * onClick
+                             */
                             public void onClick(View v) {
                                 tagId = -1;
                                 lastHistogramSelectedPosition = -1;
@@ -673,6 +712,9 @@ public class TodayViewRecyclerViewAdapter
 	}
 	
 // view holder class////////////////////////////////////////////////////////////////////////////////
+    /**
+     * static class viewHolder
+     */
     public static class viewHolder extends RecyclerView.ViewHolder {
         @Optional
         @InjectView(R.id.date)
@@ -734,7 +776,9 @@ public class TodayViewRecyclerViewAdapter
             ButterKnife.inject(this, view);
         }
     }
-
+    /**
+     * interface OnItemClickListener
+     */
     public interface OnItemClickListener {
         void onItemClick(View view , int position);
     }
@@ -742,6 +786,9 @@ public class TodayViewRecyclerViewAdapter
 // set the listener of the check button on the snack bar of pie/////////////////////////////////////
     private class mActionClickListenerForPie implements ActionClickListener {
         @Override
+        /**
+         * onActionClicked
+         */
         public void onActionClicked(Snackbar snackbar) {
             List<CoCoinRecord> shownCoCoinRecords = Expanse.get(tagId);
             ((FragmentActivity)mContext).getSupportFragmentManager()
@@ -755,6 +802,9 @@ public class TodayViewRecyclerViewAdapter
 // set the listener of the check button on the snack bar of histogram///////////////////////////////
     private class mActionClickListenerForHistogram implements ActionClickListener {
         @Override
+        /**
+         * onActionClicked
+         */
         public void onActionClicked(Snackbar snackbar) {
             ArrayList<CoCoinRecord> shownCoCoinRecords = new ArrayList<>();
             int index = timeIndex;

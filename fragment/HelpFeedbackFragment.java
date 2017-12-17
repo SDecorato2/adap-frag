@@ -1,19 +1,6 @@
 package com.nightonke.saver.fragment;
 
-import android.app.Activity;
-import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.TextView;
+import javax.swing.text.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
@@ -22,7 +9,17 @@ import com.nightonke.saver.R;
 import com.nightonke.saver.activity.CoCoinApplication;
 import com.nightonke.saver.model.Feedback;
 import com.nightonke.saver.util.CoCoinUtil;
+import com.sun.tools.javac.util.JCDiagnostic.Fragment;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 import cn.bmob.v3.listener.SaveListener;
 
 /**
@@ -43,6 +40,9 @@ public class HelpFeedbackFragment extends Fragment {
 
     private ObservableScrollView mScrollView;
 
+    /**
+     * HelpFeedbackFragment
+     */
     public static HelpFeedbackFragment newInstance() {
         HelpFeedbackFragment fragment = new HelpFeedbackFragment();
         return fragment;
@@ -52,6 +52,9 @@ public class HelpFeedbackFragment extends Fragment {
     private Context mContext;
 
     @Override
+    /**
+     * onAttach
+     */
     public void onAttach(Context context) {
         super.onAttach(context);
 
@@ -61,17 +64,26 @@ public class HelpFeedbackFragment extends Fragment {
     }
 
     @Override
+    /**
+     * onCreate
+     */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getContext();
     }
 
     @Override
+    /**
+     * onCreateView
+     */
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_help_feedback_view, container, false);
     }
 
     @Override
+    /**
+     * onViewCreated
+     */
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -89,6 +101,9 @@ public class HelpFeedbackFragment extends Fragment {
         send = (TextView)view.findViewById(R.id.send);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
+            /**
+             * onClick
+             */
             public void onClick(View v) {
                 if (exceed) {
                     new MaterialDialog.Builder(mContext)
@@ -102,11 +117,17 @@ public class HelpFeedbackFragment extends Fragment {
                     feedback.setContent(input.getText().toString());
                     feedback.save(CoCoinApplication.getAppContext(), new SaveListener() {
                         @Override
+                        /**
+                         * onSuccess
+                         */
                         public void onSuccess() {
                             CoCoinUtil.getInstance().showToast(CoCoinApplication.getAppContext(), CoCoinApplication.getAppContext().getResources().getString(R.string.help_feedback_sent_successfully));
                         }
 
                         @Override
+                        /**
+                         * onFailure
+                         */
                         public void onFailure(int code, String arg0) {
                             CoCoinUtil.getInstance().showToast(CoCoinApplication.getAppContext(), CoCoinApplication.getAppContext().getResources().getString(R.string.help_feedback_sent_fail));
                         }
@@ -117,11 +138,17 @@ public class HelpFeedbackFragment extends Fragment {
 
         input.addTextChangedListener(new TextWatcher() {
             @Override
+            /**
+             * beforeTextChanged
+             */
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
             @Override
+            /**
+             * onTextChanged
+             */
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 setNumberText();
                 try {
@@ -133,6 +160,9 @@ public class HelpFeedbackFragment extends Fragment {
             }
 
             @Override
+            /**
+             * afterTextChanged
+             */
             public void afterTextChanged(Editable s) {
 
             }
@@ -160,6 +190,9 @@ public class HelpFeedbackFragment extends Fragment {
         }
     }
 
+    /**
+     * OnTextChangeListener
+     */
     public interface OnTextChangeListener {
         void onTextChange(String text, boolean exceed);
     }

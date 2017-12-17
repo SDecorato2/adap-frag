@@ -1,8 +1,18 @@
 package com.nightonke.saver.fragment;
 
+import java.awt.Button;
+import java.awt.Dialog;
+import java.util.List;
+
+import javax.swing.text.View;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.nightonke.saver.R;
+import com.nightonke.saver.adapter.RecordCheckDialogRecyclerViewAdapter;
+import com.nightonke.saver.model.CoCoinRecord;
+import com.nightonke.saver.util.CoCoinUtil;
+
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,20 +21,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.nightonke.saver.R;
-import com.nightonke.saver.adapter.RecordCheckDialogRecyclerViewAdapter;
-import com.nightonke.saver.model.CoCoinRecord;
-import com.nightonke.saver.util.CoCoinUtil;
-
-import org.w3c.dom.Text;
-
-import java.util.List;
 
 /**
  * Created by 伟平 on 2015/10/31.
@@ -100,6 +97,7 @@ public class RecordCheckDialogFragment extends DialogFragment implements RecordC
         title = null;
     }
 
+    
     private MaterialDialog dialog;
     private View dialogView;
     @Override
