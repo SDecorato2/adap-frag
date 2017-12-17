@@ -409,6 +409,7 @@ public class MySwipeableItemAdapter
         /*
         execute a method
          */
+        
         void onItemClick(int position);
     }
 }

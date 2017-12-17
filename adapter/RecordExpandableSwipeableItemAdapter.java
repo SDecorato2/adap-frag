@@ -33,6 +33,7 @@ import java.util.ArrayList;
 /**
  * SwipeableItemAdapter public class
  */
+
 public class RecordExpandableSwipeableItemAdapter
         extends AbstractExpandableItemAdapter<RecordExpandableSwipeableItemAdapter.MyGroupViewHolder,
         RecordExpandableSwipeableItemAdapter.MyChildViewHolder>

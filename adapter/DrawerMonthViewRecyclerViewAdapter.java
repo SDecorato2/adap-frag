@@ -1,7 +1,6 @@
 package com.nightonke.saver.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,6 +113,10 @@ public class DrawerMonthViewRecyclerViewAdapter
         holder.money.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
     }
 
+    /**
+     * @author
+     * @version
+     */
     public class viewHolder extends RecyclerView.ViewHolder
         implements View.OnClickListener {
         @Optional
@@ -143,6 +146,10 @@ public class DrawerMonthViewRecyclerViewAdapter
         }
     }
 
+    /**
+     * @author
+     * @version
+     */
     public interface OnItemClickListener {
         public void onItemClick(View view, int position);
     }
@@ -150,5 +157,4 @@ public class DrawerMonthViewRecyclerViewAdapter
     public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
         this.onItemClickListener = mItemClickListener;
     }
-
 }

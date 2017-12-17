@@ -28,8 +28,6 @@ import java.util.List;
 
 public class TagViewFragment extends Fragment {
 
-    private int position;
-
     private List<CoCoinRecord> list = new ArrayList<>();
 
     private RecyclerView mRecyclerView;
@@ -38,12 +36,13 @@ public class TagViewFragment extends Fragment {
     private Context mContext;
 
     //TO-DO CONTROL HERE
-    public static TagViewFragment newInstance(int position) {
+    public static TagViewFragment newInstance()
+    {
         TagViewFragment fragment = new TagViewFragment();
-        Bundle args = new Bundle();
-        int count = position;
-        args.putInt("POSITION", count);
-        fragment.setArguments(args);
+        Bundle argom = new Bundle();
+        int count;
+        argom.putInt("POSITION", count);
+        fragment.setArguments(argom);
         return fragment;
     }
 

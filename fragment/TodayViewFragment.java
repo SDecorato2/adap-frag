@@ -53,12 +53,12 @@ public class TodayViewFragment extends Fragment {
 
 
     //TO-DO CONTROL HERE
-    public static TodayViewFragment newInstance(int position) {
+    public static TodayViewFragment newInstance() {
         TodayViewFragment fragment = new TodayViewFragment();
-        Bundle args = new Bundle();
-        int k = position;
-        args.putInt("POSITION", k);
-        fragment.setArguments(args);
+        Bundle argom = new Bundle();
+        int k;
+        argom.putInt("POSITION", k);
+        fragment.setArguments(argom);
         return fragment;
     }
 
@@ -73,6 +73,133 @@ public class TodayViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.today_fragment, container, false);
+    }
+
+
+    public void cond(){
+        if (start == -1) {
+            start = i;
+        }
+    }
+
+    public void fun1(){
+        leftRange = CoCoinUtil.GetTodayLeftRange(now);
+        for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
+            if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
+                end = i + 1;
+            }
+            cond();
+        }
+    }
+
+    public void fun2(){
+        leftRange = CoCoinUtil.GetYesterdayLeftRange(now);
+        rightRange = CoCoinUtil.GetYesterdayRightRange(now);
+        for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
+            if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
+                end = i + 1;
+            } else cond1();
+        }
+    }
+
+    public void fun3(){
+        leftRange = CoCoinUtil.GetThisWeekLeftRange(now);
+        for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
+            if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
+                end = i + 1;
+            }
+            cond();
+        }
+    }
+
+    public void fun4(){
+        leftRange = CoCoinUtil.GetLastWeekLeftRange(now);
+        rightRange = CoCoinUtil.GetLastWeekRightRange(now);
+        for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
+            if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
+                end = i + 1;
+            } else cond1();
+        }
+    }
+
+    public void fun5(){
+        leftRange = CoCoinUtil.GetThisMonthLeftRange(now);
+        for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
+            if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
+                end = i + 1;
+            }
+            cond();
+        }
+    }
+
+    public void fun6(){
+        leftRange = CoCoinUtil.GetLastMonthLeftRange(now);
+        rightRange = CoCoinUtil.GetLastMonthRightRange(now);
+        for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
+            if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
+                end = i + 1;
+            } else cond1();
+        }
+    }
+
+    public void fun7(){
+        leftRange = CoCoinUtil.GetThisYearLeftRange(now);
+        for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
+            if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
+                end = i + 1;
+            }
+            cond();
+        }
+    }
+
+    public void fun8(){
+        leftRange = CoCoinUtil.GetLastYearLeftRange(now);
+        rightRange = CoCoinUtil.GetLastYearRightRange(now);
+        for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
+            if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
+                end = i + 1;
+            } else cond1();
+        }
+    }
+
+    public void cond1(){
+        if (recordManager.RECORDS.get(i).getCalendar().before(rightRange)) {
+            cond();
+        }
+    }
+
+    public void functionz(int num){
+        switch(num){
+            case TODAY:
+                fun1();
+                break;
+            case YESTERDAY:
+                fun2();
+                break;
+            case THIS_WEEK:
+                fun3();
+                break;
+            case LAST_WEEK:
+                fun4();
+                break;
+        }
+    }
+
+    public void functionz(int num){
+        switch(num){
+            case THIS_MONTH:
+                fun5();
+                break;
+            case LAST_MONTH:
+                fun6();
+                break;
+            case THIS_YEAR:
+                fun7();
+                break;
+            case LAST_YEAR:
+                fun8();
+                break;
+        }
     }
 
     @Override
@@ -92,111 +219,11 @@ public class TodayViewFragment extends Fragment {
         int start = -1;
         int end = 0;
 
-        switch (position) {
-            case TODAY:
-                leftRange = CoCoinUtil.GetTodayLeftRange(now);
-                for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
-                    if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
-                        end = i + 1;
-                        break;
-                    }
-                    if (start == -1) {
-                        start = i;
-                    }
-                }
-                break;
-            case YESTERDAY:
-                leftRange = CoCoinUtil.GetYesterdayLeftRange(now);
-                rightRange = CoCoinUtil.GetYesterdayRightRange(now);
-                for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
-                    if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
-                        end = i + 1;
-                        break;
-                    } else if (!recordManager.RECORDS.get(i).getCalendar().after(rightRange)) {
-                        if (start == -1) {
-                            start = i;
-                        }
-                    }
-                }
-                break;
-            case THIS_WEEK:
-                leftRange = CoCoinUtil.GetThisWeekLeftRange(now);
-                for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
-                    if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
-                        end = i + 1;
-                        break;
-                    }
-                    if (start == -1) {
-                        start = i;
-                    }
-                }
-                break;
-            case LAST_WEEK:
-                leftRange = CoCoinUtil.GetLastWeekLeftRange(now);
-                rightRange = CoCoinUtil.GetLastWeekRightRange(now);
-                for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
-                    if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
-                        end = i + 1;
-                        break;
-                    } else if (recordManager.RECORDS.get(i).getCalendar().before(rightRange)) {
-                        if (start == -1) {
-                            start = i;
-                        }
-                    }
-                }
-                break;
-            case THIS_MONTH:
-                leftRange = CoCoinUtil.GetThisMonthLeftRange(now);
-                for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
-                    if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
-                        end = i + 1;
-                        break;
-                    }
-                    if (start == -1) {
-                        start = i;
-                    }
-                }
-                break;
-            case LAST_MONTH:
-                leftRange = CoCoinUtil.GetLastMonthLeftRange(now);
-                rightRange = CoCoinUtil.GetLastMonthRightRange(now);
-                for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
-                    if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
-                        end = i + 1;
-                        break;
-                    } else if (recordManager.RECORDS.get(i).getCalendar().before(rightRange)) {
-                        if (start == -1) {
-                            start = i;
-                        }
-                    }
-                }
-                break;
-            case THIS_YEAR:
-                leftRange = CoCoinUtil.GetThisYearLeftRange(now);
-                for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
-                    if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
-                        end = i + 1;
-                        break;
-                    }
-                    if (start == -1) {
-                        start = i;
-                    }
-                }
-                break;
-            case LAST_YEAR:
-                leftRange = CoCoinUtil.GetLastYearLeftRange(now);
-                rightRange = CoCoinUtil.GetLastYearRightRange(now);
-                for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
-                    if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
-                        end = i + 1;
-                        break;
-                    } else if (recordManager.RECORDS.get(i).getCalendar().before(rightRange)) {
-                        if (start == -1) {
-                            start = i;
-                        }
-                    }
-                }
-                break;
+        if(position<4){
+            functionz(position);
+        }
+        else{
+            funtionf(position);
         }
 
         adapter = new TodayViewRecyclerViewAdapter(start, end, mContext, position);

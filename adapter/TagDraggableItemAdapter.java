@@ -37,6 +37,7 @@ public class TagDraggableItemAdapter
     declarations of variables
      */
 
+    
     private static final String TAG = "TagDraggableItemAdapter";
 
 

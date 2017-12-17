@@ -1,7 +1,6 @@
 package com.nightonke.saver.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,6 +81,10 @@ public class RecordCheckDialogRecyclerViewAdapter extends RecyclerView.Adapter<R
         return coCoinRecords.size();
     }
 
+    /**
+     * @author
+     * @version
+     */
     public class viewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @InjectView(R.id.image_view)
         ImageView imageView;
@@ -106,7 +109,10 @@ public class RecordCheckDialogRecyclerViewAdapter extends RecyclerView.Adapter<R
 //            onItemClickListener.onItemClick(v, getPosition());
         }
     }
-
+    /**
+     * @author
+     * @version
+     */
     public interface OnItemClickListener {
         void onItemClick(View view , int position);
     }

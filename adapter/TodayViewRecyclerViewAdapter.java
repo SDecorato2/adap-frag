@@ -288,7 +288,7 @@ public class TodayViewRecyclerViewAdapter
                     holder.pie.setPieChartData(pieChartData);
                     holder.pie.setChartRotationEnabled(false);
 
-// two control button of pie////////////////////////////////////////////////////////////////////////
+// two control button of pie/////////////////
                     holder.iconRight.setVisibility(View.VISIBLE);
                     holder.iconRight.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -350,10 +350,10 @@ public class TodayViewRecyclerViewAdapter
 
                     setValueTouchListnerHistogram();
 
-// set the listener of the reset button/////////////////////////////////////////////////////////////
+// set the listener of the reset button//////////////////////
                     setListnerRestButton();
 
-// set the listener of the show all button//////////////////////////////////////////////////////////
+// set the listener of the show all button///////////////////
                     holder.all.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
