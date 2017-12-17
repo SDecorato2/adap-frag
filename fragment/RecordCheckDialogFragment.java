@@ -66,7 +66,7 @@ public class RecordCheckDialogFragment extends DialogFragment implements RecordC
         builder.setPositiveButton(mContext.getResources().getString(R.string.get),
                 new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialogInt, int which) {
             }
         });
 
@@ -81,7 +81,7 @@ public class RecordCheckDialogFragment extends DialogFragment implements RecordC
 
         alert.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
-            public void onShow(DialogInterface dialog) {
+            public void onShow(DialogInterface dialogI) {
                 Button btnPositive = alert.getButton(Dialog.BUTTON_POSITIVE);
                 btnPositive.setTypeface(CoCoinUtil.typefaceLatoLight);
             }
@@ -91,8 +91,8 @@ public class RecordCheckDialogFragment extends DialogFragment implements RecordC
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog) {
-        super.onDismiss(dialog);
+    public void onDismiss(DialogInterface dialogIn) {
+        super.onDismiss(dialogIn);
 
         recyclerView = null;
         mContext = null;
