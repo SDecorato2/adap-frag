@@ -30,7 +30,14 @@ import java.util.List;
 
 public class MonthViewFragment extends Fragment {
 
+    /**
+     *  The position
+     * */
     public int position;
+
+    /**
+     * the month number
+     * */
     public int monthNumber;
 
     private List<CoCoinRecord> list = new ArrayList<>();
@@ -42,17 +49,24 @@ public class MonthViewFragment extends Fragment {
 
     private boolean IS_EMPTY = false;
 
-    public static MonthViewFragment newInstance(int position, int monthNumber) {
+
+    /**
+     * returns a new MonthViewFragment
+     * */
+    public static MonthViewFragment newInstance(int pos, int monthNum) {
         MonthViewFragment fragment = new MonthViewFragment();
         Bundle args = new Bundle();
-        args.putInt("POSITION", position);
-        args.putInt("MONTH_NUMBER", monthNumber);
+        args.putInt("POSITION", pos);
+        args.putInt("MONTH_NUMBER", monthNum);
         fragment.setArguments(args);
-        fragment.monthNumber = monthNumber;
-        fragment.position = position;
+        fragment.monthNumber = monthNum;
+        fragment.position = pos;
         return fragment;
     }
 
+    /**
+     * onCreate method
+     * */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,12 +76,20 @@ public class MonthViewFragment extends Fragment {
         IS_EMPTY = (monthNumber == -1);
     }
 
+
+    /**
+     * onCreateView method
+     * */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.month_fragment, container, false);
     }
 
+
+    /**
+     * onViewCreated method
+     * */
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -125,6 +147,10 @@ public class MonthViewFragment extends Fragment {
         MaterialViewPagerHelper.registerRecyclerView(getActivity(), mRecyclerView, null);
     }
 
+
+    /**
+     * onDestroy method
+     * */
     @Override
     public void onDestroy() {
 

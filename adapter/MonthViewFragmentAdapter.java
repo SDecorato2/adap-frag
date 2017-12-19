@@ -19,6 +19,9 @@ import java.util.List;
 
 public class MonthViewFragmentAdapter extends FragmentStatePagerAdapter {
 
+    /**
+     *  A list used for the months
+    * */
     public List<MonthViewFragment> list;
 
     private int monthNumber;
@@ -28,8 +31,15 @@ public class MonthViewFragmentAdapter extends FragmentStatePagerAdapter {
     private int endYear;
     private int endMonth;
 
+    /**
+     *  Let you know if this object is empty
+     * */
     public boolean IS_EMPTY = false;
 
+
+    /**
+     *  An adapter for MonthView
+     * */
     public MonthViewFragmentAdapter(android.support.v4.app.FragmentManager fm) {
         super(fm);
 
@@ -54,18 +64,30 @@ public class MonthViewFragmentAdapter extends FragmentStatePagerAdapter {
         }
     }
 
+
+    /**
+     *  Returns the item in i position
+     * */
     @Override
     public Fragment getItem(int i) {
         if (IS_EMPTY) return MonthViewFragment.newInstance(0, -1);
         return list.get(i);
     }
 
+
+    /**
+     *  Returns the month number
+     * */
     @Override
     public int getCount() {
         if (IS_EMPTY) return 1;
         return monthNumber;
     }
 
+
+    /**
+     *  Returns a sequence for the date
+     * */
     @Override
     public CharSequence getPageTitle(int position) {
         if (IS_EMPTY) return "";
@@ -73,4 +95,5 @@ public class MonthViewFragmentAdapter extends FragmentStatePagerAdapter {
         int nowYear = startYear + (startMonth + (monthNumber - position - 1)) / 12;
         return CoCoinUtil.GetMonthShort(nowMonth + 1) + " " + nowYear;
     }
+
 }

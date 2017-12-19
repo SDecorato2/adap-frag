@@ -115,7 +115,7 @@ public class EditMoneyFragment extends Fragment {
     /**
      * this is a interface called OnTagItemSelectedListener
      */
-    
+
     public interface OnTagItemSelectedListener {
         //a method
         void onTagItemPicked(int position);

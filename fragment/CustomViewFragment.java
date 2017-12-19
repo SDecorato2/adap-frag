@@ -397,20 +397,22 @@ public class CustomViewFragment extends Fragment {
                             + "in " + CoCoinUtil.GetTagName(tagId);
                 }
                 if ("zh".equals(CoCoinUtil.GetLanguage())) {
-                    dialogTitle = dateShownString + "\n" +
-                            CoCoinUtil.GetSpendString((int) sliceValue.getValue()) + " " +
-                            "于" + CoCoinUtil.GetTagName(tagId);
+                    String tmp = dateShownString + "\n" + CoCoinUtil.GetSpendString((int) sliceValue.getValue());
+                    dialogTitle =  tmp + "  于" + CoCoinUtil.GetTagName(tagId);
                 } else {
-                    dialogTitle = CoCoinUtil.GetSpendString((int) sliceValue.getValue()) + " " +
+                    String tmp = CoCoinUtil.GetSpendString((int) sliceValue.getValue()) + " " +
                             mContext.getResources().getString(R.string.from) + " " +
-                            CoCoinUtil.GetMonthShort(from.get(Calendar.MONTH) + 1) + " " +
-                            from.get(Calendar.DAY_OF_MONTH) + " " +
+                            CoCoinUtil.GetMonthShort(from.get(Calendar.MONTH) + 1);
+
+                    String tmp2 = from.get(Calendar.DAY_OF_MONTH) + " " +
                             from.get(Calendar.YEAR) + "\n" +
-                            mContext.getResources().getString(R.string.to) + " " +
-                            CoCoinUtil.GetMonthShort(to.get(Calendar.MONTH) + 1) + " " +
+                            mContext.getResources().getString(R.string.to);
+
+                    String tmp3 = CoCoinUtil.GetMonthShort(to.get(Calendar.MONTH) + 1) + " " +
                             to.get(Calendar.DAY_OF_MONTH) + " " +
-                            to.get(Calendar.YEAR) + " " +
-                            "in " + CoCoinUtil.GetTagName(tagId);
+                            to.get(Calendar.YEAR);
+
+                    dialogTitle = tmp + tmp2 + tmp3 + "in " + CoCoinUtil.GetTagName(tagId);
                 }
                 Snackbar snackbar =
                         Snackbar

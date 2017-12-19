@@ -700,93 +700,154 @@ public class ReportViewFragment extends Fragment
         refWatcher.watch(this);
     }
 
+
+    public void caseIconRight(SelectedValue selectedValue){
+        if (lastPieSelectedPosition != -1) {
+            pieSelectedPosition = lastPieSelectedPosition;
+        }
+        pieSelectedPosition
+                = (pieSelectedPosition - 1 + pieChartData.getValues().size())
+                % pieChartData.getValues().size();
+        selectedValue =
+                new SelectedValue(
+                        pieSelectedPosition,
+                        0,
+                        SelectedValue.SelectedValueType.NONE);
+        pie.selectValue(selectedValue);
+    }
+
+    public void caseIconLeft(SelectedValue selectedValue){
+        if (lastPieSelectedPosition != -1) {
+            pieSelectedPosition = lastPieSelectedPosition;
+        }
+        pieSelectedPosition
+                = (pieSelectedPosition + 1)
+                % pieChartData.getValues().size();
+        selectedValue =
+                new SelectedValue(
+                        pieSelectedPosition,
+                        0,
+                        SelectedValue.SelectedValueType.NONE);
+        pie.selectValue(selectedValue);
+    }
+
+    public void caseHighTagMore(){
+        if (highestTagsLayout != null) {
+            if (highestTagsLayout.isExpanded()) {
+                highestTagsLayout.collapse();
+                highestTagMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_highest_tag_show_more));
+            } else {
+                highestTagsLayout.expand();
+                highestTagMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_highest_tag_show_less));
+            }
+        }
+    }
+
+    public void caseLowTagMore(){
+        if (lowestTagsLayout != null) {
+            if (lowestTagsLayout.isExpanded()) {
+                lowestTagsLayout.collapse();
+                lowestTagMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_more));
+            } else {
+                lowestTagsLayout.expand();
+                lowestTagMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_less));
+            }
+        }
+    }
+
+    public void caseIconLeftLine(SelectedValue selectedValue){
+        if (lastLineSelectedPosition != -1) {
+            lineSelectedPosition = lastLineSelectedPosition;
+        }
+        lineSelectedPosition
+                = (lineSelectedPosition - 1 + lineChartData.getLines().get(0).getValues().size())
+                % lineChartData.getLines().get(0).getValues().size();
+        selectedValue =
+                new SelectedValue(
+                        0,
+                        lineSelectedPosition,
+                        SelectedValue.SelectedValueType.NONE);
+        line.selectValue(selectedValue);
+    }
+
+    public void caseIconRightLine(SelectedValue selectedValue){
+        if (lastLineSelectedPosition != -1) {
+            lineSelectedPosition = lastLineSelectedPosition;
+        }
+        lineSelectedPosition
+                = (lineSelectedPosition + 1)
+                % lineChartData.getLines().get(0).getValues().size();
+        selectedValue =
+                new SelectedValue(
+                        0,
+                        lineSelectedPosition,
+                        SelectedValue.SelectedValueType.NONE);
+        line.selectValue(selectedValue);
+    }
+
+    public void caseHighMonthMore(){
+        if (highestMonthsLayout != null) {
+            if (highestMonthsLayout.isExpanded()) {
+                highestMonthsLayout.collapse();
+                highestMonthMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_more));
+            } else {
+                highestMonthsLayout.expand();
+                highestMonthMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_less));
+            }
+        }
+    }
+
+    public void caseHighDayMore(){
+        if (highestDaysLayout != null) {
+            if (highestDaysLayout.isExpanded()) {
+                highestDaysLayout.collapse();
+                highestDayMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_more));
+            } else {
+                highestDaysLayout.expand();
+                highestDayMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_less));
+            }
+        }
+    }
+
+    public void caseLowDayMore(){
+        if (lowestDaysLayout != null) {
+            if (lowestDaysLayout.isExpanded()) {
+                lowestDaysLayout.collapse();
+                lowestDayMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_more));
+            } else {
+                lowestDaysLayout.expand();
+                lowestDayMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_less));
+            }
+        }
+    }
+
     @Override
     public void onClick(View v) {
         SelectedValue selectedValue = null;
         switch (v.getId()) {
             case R.id.icon_right:
-                if (lastPieSelectedPosition != -1) {
-                    pieSelectedPosition = lastPieSelectedPosition;
-                }
-                pieSelectedPosition
-                        = (pieSelectedPosition - 1 + pieChartData.getValues().size())
-                        % pieChartData.getValues().size();
-                selectedValue =
-                        new SelectedValue(
-                                pieSelectedPosition,
-                                0,
-                                SelectedValue.SelectedValueType.NONE);
-                pie.selectValue(selectedValue);
+                caseIconRight(selectedValue);
                 break;
             case R.id.icon_left:
-                if (lastPieSelectedPosition != -1) {
-                    pieSelectedPosition = lastPieSelectedPosition;
-                }
-                pieSelectedPosition
-                        = (pieSelectedPosition + 1)
-                        % pieChartData.getValues().size();
-                selectedValue =
-                        new SelectedValue(
-                                pieSelectedPosition,
-                                0,
-                                SelectedValue.SelectedValueType.NONE);
-                pie.selectValue(selectedValue);
+                caseIconLeft(selectedValue);
                 break;
             case R.id.highest_first:
                 onItemClick(highestTags, highestTags.getChildAt(0), -1, -1);
                 break;
             case R.id.highest_tag_more:
-                if (highestTagsLayout != null) {
-                    if (highestTagsLayout.isExpanded()) {
-                        highestTagsLayout.collapse();
-                        highestTagMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_highest_tag_show_more));
-                    } else {
-                        highestTagsLayout.expand();
-                        highestTagMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_highest_tag_show_less));
-                    }
-                }
+                caseHighTagMore();
                 break;
             case R.id.lowest_first:
                 onItemClick(lowestTags, lowestTags.getChildAt(0), -1, -1);
                 break;
             case R.id.lowest_tag_more:
-                if (lowestTagsLayout != null) {
-                    if (lowestTagsLayout.isExpanded()) {
-                        lowestTagsLayout.collapse();
-                        lowestTagMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_more));
-                    } else {
-                        lowestTagsLayout.expand();
-                        lowestTagMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_less));
-                    }
-                }
+                caseLowTagMore();
                 break;
             case R.id.icon_left_line:
-                if (lastLineSelectedPosition != -1) {
-                    lineSelectedPosition = lastLineSelectedPosition;
-                }
-                lineSelectedPosition
-                        = (lineSelectedPosition - 1 + lineChartData.getLines().get(0).getValues().size())
-                        % lineChartData.getLines().get(0).getValues().size();
-                selectedValue =
-                        new SelectedValue(
-                                0,
-                                lineSelectedPosition,
-                                SelectedValue.SelectedValueType.NONE);
-                line.selectValue(selectedValue);
+                caseIconLeftLine(selectedValue);
                 break;
             case R.id.icon_right_line:
-                if (lastLineSelectedPosition != -1) {
-                    lineSelectedPosition = lastLineSelectedPosition;
-                }
-                lineSelectedPosition
-                        = (lineSelectedPosition + 1)
-                        % lineChartData.getLines().get(0).getValues().size();
-                selectedValue =
-                        new SelectedValue(
-                                0,
-                                lineSelectedPosition,
-                                SelectedValue.SelectedValueType.NONE);
-                line.selectValue(selectedValue);
+                caseIconRightLine(selectedValue);
                 break;
             case R.id.highest_first_month:
                 onItemClick(highestMonths, highestMonths.getChildAt(0), -1, -1);
@@ -795,43 +856,19 @@ public class ReportViewFragment extends Fragment
                 onItemClick(highestMonths, highestMonths.getChildAt(0), 10, -1);
                 break;
             case R.id.highest_month_more:
-                if (highestMonthsLayout != null) {
-                    if (highestMonthsLayout.isExpanded()) {
-                        highestMonthsLayout.collapse();
-                        highestMonthMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_more));
-                    } else {
-                        highestMonthsLayout.expand();
-                        highestMonthMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_less));
-                    }
-                }
+                caseHighMonthMore();
                 break;
             case R.id.highest_first_day:
                 onItemClick(highestDays, highestDays.getChildAt(0), -1, -1);
                 break;
             case R.id.highest_day_more:
-                if (highestDaysLayout != null) {
-                    if (highestDaysLayout.isExpanded()) {
-                        highestDaysLayout.collapse();
-                        highestDayMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_more));
-                    } else {
-                        highestDaysLayout.expand();
-                        highestDayMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_less));
-                    }
-                }
+                caseHighDayMore();
                 break;
             case R.id.lowest_first_day:
                 onItemClick(lowestDays, lowestDays.getChildAt(0), -1, -1);
                 break;
             case R.id.lowest_day_more:
-                if (lowestDaysLayout != null) {
-                    if (lowestDaysLayout.isExpanded()) {
-                        lowestDaysLayout.collapse();
-                        lowestDayMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_more));
-                    } else {
-                        lowestDaysLayout.expand();
-                        lowestDayMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_less));
-                    }
-                }
+                caseLowDayMore();
                 break;
             case R.id.button:
                 if (!isEmpty) showSelectListDataDialog();
@@ -1096,14 +1133,9 @@ public class ReportViewFragment extends Fragment
             this.to = to;
             this.isYear = isYear;
         }
-        @Override
-        protected String doInBackground(String... params) {
-            expense = 0;
-            records = 0;
-            tags = 0;
-            highestTagExpense = new ArrayList<>();
-            lowestTagExpense = new ArrayList<>();
-            needExpense = new ArrayList<>();
+
+        private void doInBackgroundONE(){
+
             for (int i = 0; i < 4; i++) {
                 double[] aTag = {0, 0};
                 needExpense.add(aTag);
@@ -1144,8 +1176,9 @@ public class ReportViewFragment extends Fragment
                     dayRecord[i][j] = 0;
                 }
             }
+        }
 
-            int size = RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size();
+        private void doInBackgroundTWO(int size,double[] tagExpense, double[] tagRecords, ArrayList<double[]> monthExpense,  double[][] dayExpense, double[][] dayRecord){
             for (int i = size - 1; i >= 0; i--) {
                 CoCoinRecord record = RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.get(i);
                 if (record.getCalendar().before(from)) break;
@@ -1173,7 +1206,9 @@ public class ReportViewFragment extends Fragment
                     break;
                 }
             }
+        }
 
+        private void doInBackgroundTHREE( double[] tagExpense,  double[] tagRecords ){
             for (int i = 0; i < tagExpense.length; i++) {
                 if (tagExpense[i] != 0) {
                     int cfht = CoCoinUtil.IsCFHT(i);
@@ -1213,192 +1248,236 @@ public class ReportViewFragment extends Fragment
             pieChartData.setHasLabelsOutside(false);
             pieChartData.setHasCenterCircle(SettingManager.getInstance().getIsHollow());
 
+        }
+
+
+        private void caseIsYear(ArrayList<double[]> monthExpense, double[][] dayExpense, ArrayList<double[]> dayExpense2,  double[][] dayRecord){
+            Collections.sort(monthExpense, new Comparator<double[]>() {
+                @Override
+                public int compare(double[] lhs, double[] rhs) {
+                    return Double.compare(rhs[1], lhs[1]);
+                }
+            });
+            for (int i = 0; i < 12; i++) {
+                double[] aMonth = {reportYear, monthExpense.get(i)[0], -1, monthExpense.get(i)[1], monthExpense.get(i)[1] / expense, monthExpense.get(i)[2]};
+                highestMonthExpense.add(aMonth);
+            }
+            for (int i = 11; i >= 0; i--) {
+                double[] aMonth = {reportYear, monthExpense.get(i)[0], -1, monthExpense.get(i)[1], monthExpense.get(i)[1] / expense, monthExpense.get(i)[2]};
+                lowestMonthExpense.add(aMonth);
+            }
+
+            averageMonthExpense = expense / 12;
+            averageMonthRecord = records / 12;
+
+
+            for (int i = 0; i < 12; i++) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(reportYear, i, 1, 0, 0, 0);
+                calendar.add(Calendar.SECOND, 0);
+                int dayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+                for (int j = 1; j <= dayOfMonth; j++) {
+                    double[] aDay = {i, j, dayExpense[i][j], dayRecord[i][j]};
+                    dayExpense2.add(aDay);
+                }
+            }
+            Collections.sort(dayExpense2, new Comparator<double[]>() {
+                @Override
+                public int compare(double[] lhs, double[] rhs) {
+                    return Double.compare(rhs[2], lhs[2]);
+                }
+            });
+            for (int i = 0; i < MAX_DAY_EXPENSE; i++) {
+                if (i >= dayExpense2.size() || dayExpense2.get(i)[2] == 0) break;
+                double[] aDay = {reportYear, dayExpense2.get(i)[0], dayExpense2.get(i)[1], dayExpense2.get(i)[2], dayExpense2.get(i)[2] / expense, dayExpense2.get(i)[3]};
+                highestDayExpense.add(aDay);
+            }
+
+            int counter = min(dayExpense2.size(), MAX_DAY_EXPENSE);
+            for (int i = dayExpense2.size() - 1; i >= 0; i--) {
+                if (dayExpense2.get(i)[2] > 0) {
+                    double[] aDay = {reportYear, dayExpense2.get(i)[0], dayExpense2.get(i)[1], dayExpense2.get(i)[2], dayExpense2.get(i)[2] / expense, dayExpense2.get(i)[3]};
+                    lowestDayExpense.add(aDay);
+                    counter--;
+                    if (counter == 0) break;
+                }
+            }
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(reportYear, 0, 1, 0, 0, 0);
+            calendar.add(Calendar.SECOND, 0);
+            averageDayExpense = expense / calendar.getActualMaximum(Calendar.DAY_OF_YEAR);
+            averageDayRecord = records / calendar.getActualMaximum(Calendar.DAY_OF_YEAR);
+        }
+
+
+        private void caseIsNotYear(double[][] dayExpense, double[][] dayRecord){
+            ArrayList<double[]> dayExpense2 = new ArrayList<>();
+            for (int i = 0; i < 12; i++) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(reportYear, i, 1, 0, 0, 0);
+                calendar.add(Calendar.SECOND, 0);
+                int dayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+                for (int j = 1; j <= dayOfMonth; j++) {
+                    double[] aDay = {i, j, dayExpense[i][j], dayRecord[i][j]};
+                    dayExpense2.add(aDay);
+                }
+            }
+            Collections.sort(dayExpense2, new Comparator<double[]>() {
+                @Override
+                public int compare(double[] lhs, double[] rhs) {
+                    return Double.compare(rhs[2], lhs[2]);
+                }
+            });
+            for (int i = 0; i < MAX_DAY_EXPENSE; i++) {
+                if (i >= dayExpense2.size() || dayExpense2.get(i)[2] == 0) break;
+                double[] aDay = {reportYear, dayExpense2.get(i)[0], dayExpense2.get(i)[1], dayExpense2.get(i)[2], dayExpense2.get(i)[2] / expense, dayExpense2.get(i)[3]};
+                highestDayExpense.add(aDay);
+            }
+            int counter = min(dayExpense2.size(), MAX_DAY_EXPENSE);
+            for (int i = dayExpense2.size() - 1; i >= 0; i--) {
+                if (dayExpense2.get(i)[2] > 0) {
+                    double[] aDay = {reportYear, dayExpense2.get(i)[0], dayExpense2.get(i)[1], dayExpense2.get(i)[2], dayExpense2.get(i)[2] / expense, dayExpense2.get(i)[3]};
+                    lowestDayExpense.add(aDay);
+                    counter--;
+                    if (counter == 0) break;
+                }
+            }
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(reportYear, reportMonth - 1, 1, 0, 0, 0);
+            calendar.add(Calendar.SECOND, 0);
+            averageDayExpense = expense / calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+            averageDayRecord = records / calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        }
+
+        private void generateLineData( ArrayList<double[]> monthExpense){
+            List<Line> lines = new ArrayList<>();
+            for (int i = 0; i < 1; ++i) {
+
+                List<PointValue> values = new ArrayList<>();
+                for (int j = 0; j < 12; ++j) {
+                    for (int k = 0; k < 12; k++) {
+                        if (monthExpense.get(k)[0] == j) {
+                            values.add(new PointValue(j, (float)monthExpense.get(k)[1]));
+                            break;
+                        }
+                    }
+                }
+
+                Line line = new Line(values);
+                line.setColor(ContextCompat.getColor(CoCoinApplication.getAppContext(), R.color.red));
+                line.setShape(ValueShape.CIRCLE);
+                line.setCubic(false);
+                line.setFilled(false);
+                line.setHasLabels(false);
+                line.setHasLabelsOnlyForSelected(false);
+                line.setHasLines(true);
+                line.setHasPoints(true);
+                lines.add(line);
+            }
+
+            lineChartData = new LineChartData(lines);
+
+            Axis axisX = new Axis();
+            Axis axisY = new Axis().setHasLines(true);
+            axisX.setName(reportYear + "");
+            lineChartData.setAxisXBottom(axisX);
+            lineChartData.setAxisYLeft(axisY);
+
+            ArrayList<AxisValue> axisValues = new ArrayList<>();
+            for (int i = 0; i < 12; i++) {
+                AxisValue axisValue = new AxisValue(i);
+                axisValue.setLabel((i + 1) + "");
+                axisValues.add(axisValue);
+            }
+            lineChartData.getAxisXBottom().setValues(axisValues);
+        }
+
+        private void generateLineDataTWO(double[][] dayExpense){
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(reportYear, reportMonth - 1, 1, 0, 0, 0);
+            calendar.add(Calendar.SECOND, 0);
+            int days = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+            List<Line> lines = new ArrayList<>();
+            for (int i = 0; i < 1; ++i) {
+
+                List<PointValue> values = new ArrayList<>();
+                for (int j = 0; j < days; ++j) {
+                    values.add(new PointValue(j, (float)dayExpense[reportMonth - 1][j + 1]));
+                }
+
+                Line line = new Line(values);
+                line.setColor(ContextCompat.getColor(CoCoinApplication.getAppContext(), R.color.red));
+                line.setShape(ValueShape.CIRCLE);
+                line.setCubic(false);
+                line.setFilled(false);
+                line.setHasLabels(false);
+                line.setHasLabelsOnlyForSelected(false);
+                line.setHasLines(true);
+                line.setHasPoints(true);
+                lines.add(line);
+            }
+
+            lineChartData = new LineChartData(lines);
+
+            Axis axisX = new Axis();
+            Axis axisY = new Axis().setHasLines(true);
+            axisX.setName(reportYear + " " + CoCoinUtil.GetMonthShort(reportMonth));
+            lineChartData.setAxisXBottom(axisX);
+            lineChartData.setAxisYLeft(axisY);
+
+            ArrayList<AxisValue> axisValues = new ArrayList<>();
+            for (int i = 0; i < days; i++) {
+                AxisValue axisValue = new AxisValue(i);
+                axisValue.setLabel((i + 1) + "");
+                axisValues.add(axisValue);
+            }
+            lineChartData.getAxisXBottom().setValues(axisValues);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            expense = 0;
+            records = 0;
+            tags = 0;
+            highestTagExpense = new ArrayList<>();
+            lowestTagExpense = new ArrayList<>();
+            needExpense = new ArrayList<>();
+            double[] tagExpense = null;
+            double[] tagRecords = null;
+            ArrayList<double[]> monthExpense = null;
+            double[][] dayExpense = null;
+            double[][] dayRecord = null;
+
+            doInBackgroundONE();
+
+            int size = RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size();
+
+            doInBackgroundTWO(size, tagExpense, tagRecords, monthExpense, dayExpense, dayRecord);
+
+            doInBackgroundTHREE(tagExpense, tagRecords);
+
             if (isYear) {
-                Collections.sort(monthExpense, new Comparator<double[]>() {
-                    @Override
-                    public int compare(double[] lhs, double[] rhs) {
-                        return Double.compare(rhs[1], lhs[1]);
-                    }
-                });
-                for (int i = 0; i < 12; i++) {
-                    double[] aMonth = {reportYear, monthExpense.get(i)[0], -1, monthExpense.get(i)[1], monthExpense.get(i)[1] / expense, monthExpense.get(i)[2]};
-                    highestMonthExpense.add(aMonth);
-                }
-                for (int i = 11; i >= 0; i--) {
-                    double[] aMonth = {reportYear, monthExpense.get(i)[0], -1, monthExpense.get(i)[1], monthExpense.get(i)[1] / expense, monthExpense.get(i)[2]};
-                    lowestMonthExpense.add(aMonth);
-                }
-
-                averageMonthExpense = expense / 12;
-                averageMonthRecord = records / 12;
-
                 ArrayList<double[]> dayExpense2 = new ArrayList<>();
-                for (int i = 0; i < 12; i++) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.set(reportYear, i, 1, 0, 0, 0);
-                    calendar.add(Calendar.SECOND, 0);
-                    int dayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-                    for (int j = 1; j <= dayOfMonth; j++) {
-                        double[] aDay = {i, j, dayExpense[i][j], dayRecord[i][j]};
-                        dayExpense2.add(aDay);
-                    }
-                }
-                Collections.sort(dayExpense2, new Comparator<double[]>() {
-                    @Override
-                    public int compare(double[] lhs, double[] rhs) {
-                        return Double.compare(rhs[2], lhs[2]);
-                    }
-                });
-                for (int i = 0; i < MAX_DAY_EXPENSE; i++) {
-                    if (i >= dayExpense2.size() || dayExpense2.get(i)[2] == 0) break;
-                    double[] aDay = {reportYear, dayExpense2.get(i)[0], dayExpense2.get(i)[1], dayExpense2.get(i)[2], dayExpense2.get(i)[2] / expense, dayExpense2.get(i)[3]};
-                    highestDayExpense.add(aDay);
-                }
-                int counter = min(dayExpense2.size(), MAX_DAY_EXPENSE);
-                for (int i = dayExpense2.size() - 1; i >= 0; i--) {
-                    if (dayExpense2.get(i)[2] > 0) {
-                        double[] aDay = {reportYear, dayExpense2.get(i)[0], dayExpense2.get(i)[1], dayExpense2.get(i)[2], dayExpense2.get(i)[2] / expense, dayExpense2.get(i)[3]};
-                        lowestDayExpense.add(aDay);
-                        counter--;
-                        if (counter == 0) break;
-                    }
-                }
+                caseIsYear(monthExpense,dayExpense,dayExpense2,dayRecord);
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(reportYear, 0, 1, 0, 0, 0);
-                calendar.add(Calendar.SECOND, 0);
-                averageDayExpense = expense / calendar.getActualMaximum(Calendar.DAY_OF_YEAR);
-                averageDayRecord = records / calendar.getActualMaximum(Calendar.DAY_OF_YEAR);
             } else {
-                ArrayList<double[]> dayExpense2 = new ArrayList<>();
-                for (int i = 0; i < 12; i++) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.set(reportYear, i, 1, 0, 0, 0);
-                    calendar.add(Calendar.SECOND, 0);
-                    int dayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-                    for (int j = 1; j <= dayOfMonth; j++) {
-                        double[] aDay = {i, j, dayExpense[i][j], dayRecord[i][j]};
-                        dayExpense2.add(aDay);
-                    }
-                }
-                Collections.sort(dayExpense2, new Comparator<double[]>() {
-                    @Override
-                    public int compare(double[] lhs, double[] rhs) {
-                        return Double.compare(rhs[2], lhs[2]);
-                    }
-                });
-                for (int i = 0; i < MAX_DAY_EXPENSE; i++) {
-                    if (i >= dayExpense2.size() || dayExpense2.get(i)[2] == 0) break;
-                    double[] aDay = {reportYear, dayExpense2.get(i)[0], dayExpense2.get(i)[1], dayExpense2.get(i)[2], dayExpense2.get(i)[2] / expense, dayExpense2.get(i)[3]};
-                    highestDayExpense.add(aDay);
-                }
-                int counter = min(dayExpense2.size(), MAX_DAY_EXPENSE);
-                for (int i = dayExpense2.size() - 1; i >= 0; i--) {
-                    if (dayExpense2.get(i)[2] > 0) {
-                        double[] aDay = {reportYear, dayExpense2.get(i)[0], dayExpense2.get(i)[1], dayExpense2.get(i)[2], dayExpense2.get(i)[2] / expense, dayExpense2.get(i)[3]};
-                        lowestDayExpense.add(aDay);
-                        counter--;
-                        if (counter == 0) break;
-                    }
-                }
-
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(reportYear, reportMonth - 1, 1, 0, 0, 0);
-                calendar.add(Calendar.SECOND, 0);
-                averageDayExpense = expense / calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-                averageDayRecord = records / calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+                caseIsNotYear(dayExpense,dayRecord);
             }
 
             // use month/day expense values to generate line data
             if (isYear) {
-                List<Line> lines = new ArrayList<>();
-                for (int i = 0; i < 1; ++i) {
-
-                    List<PointValue> values = new ArrayList<>();
-                    for (int j = 0; j < 12; ++j) {
-                        for (int k = 0; k < 12; k++) {
-                            if (monthExpense.get(k)[0] == j) {
-                                values.add(new PointValue(j, (float)monthExpense.get(k)[1]));
-                                break;
-                            }
-                        }
-                    }
-
-                    Line line = new Line(values);
-                    line.setColor(ContextCompat.getColor(CoCoinApplication.getAppContext(), R.color.red));
-                    line.setShape(ValueShape.CIRCLE);
-                    line.setCubic(false);
-                    line.setFilled(false);
-                    line.setHasLabels(false);
-                    line.setHasLabelsOnlyForSelected(false);
-                    line.setHasLines(true);
-                    line.setHasPoints(true);
-                    lines.add(line);
-                }
-
-                lineChartData = new LineChartData(lines);
-
-                Axis axisX = new Axis();
-                Axis axisY = new Axis().setHasLines(true);
-                axisX.setName(reportYear + "");
-                lineChartData.setAxisXBottom(axisX);
-                lineChartData.setAxisYLeft(axisY);
-
-                ArrayList<AxisValue> axisValues = new ArrayList<>();
-                for (int i = 0; i < 12; i++) {
-                    AxisValue axisValue = new AxisValue(i);
-                    axisValue.setLabel((i + 1) + "");
-                    axisValues.add(axisValue);
-                }
-                lineChartData.getAxisXBottom().setValues(axisValues);
+                generateLineData(monthExpense);
             } else {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(reportYear, reportMonth - 1, 1, 0, 0, 0);
-                calendar.add(Calendar.SECOND, 0);
-                int days = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-                List<Line> lines = new ArrayList<>();
-                for (int i = 0; i < 1; ++i) {
-
-                    List<PointValue> values = new ArrayList<>();
-                    for (int j = 0; j < days; ++j) {
-                        values.add(new PointValue(j, (float)dayExpense[reportMonth - 1][j + 1]));
-                    }
-
-                    Line line = new Line(values);
-                    line.setColor(ContextCompat.getColor(CoCoinApplication.getAppContext(), R.color.red));
-                    line.setShape(ValueShape.CIRCLE);
-                    line.setCubic(false);
-                    line.setFilled(false);
-                    line.setHasLabels(false);
-                    line.setHasLabelsOnlyForSelected(false);
-                    line.setHasLines(true);
-                    line.setHasPoints(true);
-                    lines.add(line);
-                }
-
-                lineChartData = new LineChartData(lines);
-
-                Axis axisX = new Axis();
-                Axis axisY = new Axis().setHasLines(true);
-                axisX.setName(reportYear + " " + CoCoinUtil.GetMonthShort(reportMonth));
-                lineChartData.setAxisXBottom(axisX);
-                lineChartData.setAxisYLeft(axisY);
-
-                ArrayList<AxisValue> axisValues = new ArrayList<>();
-                for (int i = 0; i < days; i++) {
-                    AxisValue axisValue = new AxisValue(i);
-                    axisValue.setLabel((i + 1) + "");
-                    axisValues.add(axisValue);
-                }
-                lineChartData.getAxisXBottom().setValues(axisValues);
+                generateLineDataTWO(dayExpense);
             }
 
             return null;
         }
-        @Override
-        protected void onPostExecute(String result) {
 
-            // for title
+
+        private void onPostExecuteONE(){
             if (isYear) REPORT_TITLE = reportYear + "";
             else REPORT_TITLE = reportYear + " - " + reportMonth;
 
@@ -1460,8 +1539,10 @@ public class ReportViewFragment extends Fragment
             lineLayout.setVisibility(View.VISIBLE);
             line.setVisibility(View.VISIBLE);
             line.setLineChartData(lineChartData);
+        }
 
-            // for month
+        private void onPostExecuteTWO(){
+
             if (selectYear) {
                 highestMonthLayout.setVisibility(View.VISIBLE);
                 highestFirstIcon.setBackgroundResource(getBackgroundResource());
@@ -1525,6 +1606,19 @@ public class ReportViewFragment extends Fragment
             }
 
             if (progressDialog != null) progressDialog.dismiss();
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            // for title
+            onPostExecuteONE();
+
+            // for month
+            onPostExecuteTWO();
+
+
         }
     }
 
