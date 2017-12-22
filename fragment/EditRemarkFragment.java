@@ -20,18 +20,23 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 /**
  * Created by 伟平 on 2015/10/27.
  */
-
 public class EditRemarkFragment extends Fragment {
 
     private int fragmentPosition;
     private int tagId = -1;
 
+    /**
+     * MaterialEditText editView
+     */
     public MaterialEditText editView;
 
     private View mView;
 
     Activity activity;
 
+    /**
+     * public EditRemarkFragment
+     */
     static public EditRemarkFragment newInstance(int position, int type) {
         EditRemarkFragment fragment = new EditRemarkFragment();
 
@@ -44,6 +49,9 @@ public class EditRemarkFragment extends Fragment {
     }
 
     @Override
+    /**
+     * View onCreateView
+     */
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.edit_remark_fragment, container, false);
@@ -73,42 +81,72 @@ public class EditRemarkFragment extends Fragment {
         return mView;
     }
 
+    /**
+     * interface OnTagItemSelectedListener
+     */
     public interface OnTagItemSelectedListener {
         void onTagItemPicked(int position);
     }
 
+    /**
+     * updateTags
+     */
     public void updateTags() {
 
     }
 
+    /**
+     * getTagId
+     */
     public int getTagId() {
         return tagId;
     }
 
+    /**
+     * setTag
+     */
     public void setTag(int p) {
         tagId = RecordManager.TAGS.get(p).getId();
     }
 
+    /**
+     * getNumberText
+     */
     public String getNumberText() {
         return editView.getText().toString();
     }
 
+    /**
+     * setNumberText
+     */
     public void setNumberText(String string) {
         editView.setText(string);
     }
 
+    /**
+     * getHelpText
+     */
     public String getHelpText() {
         return editView.getHelperText();
     }
 
+    /**
+     * setHelpText
+     */
     public void setHelpText(String string) {
         editView.setHelperText(string);
     }
 
+    /**
+     * setLastSelection
+     */
     public void setLastSelection() {
         editView.setSelection(editView.getText().length());
     }
 
+    /**
+     * editRequestFocus
+     */
     public void editRequestFocus() {
         editView.requestFocus();
         InputMethodManager keyboard = (InputMethodManager)
@@ -116,6 +154,9 @@ public class EditRemarkFragment extends Fragment {
         keyboard.showSoftInput(editView, InputMethodManager.SHOW_IMPLICIT);
     }
 
+    /**
+     * setEditColor
+     */
     public void setEditColor(boolean shouldChange) {
         if (shouldChange) {
             editView.setTextColor(SettingManager.getInstance().getRemindColor());
@@ -128,10 +169,16 @@ public class EditRemarkFragment extends Fragment {
         }
     }
 
+    /**
+     * getRemark
+     */
     public String getRemark() {
         return editView.getText().toString();
     }
 
+    /**
+     * setRemark
+     */
     public void setRemark(String string) {
         editView.setText(string);
     }

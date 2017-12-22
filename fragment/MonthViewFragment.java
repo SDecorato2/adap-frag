@@ -49,6 +49,9 @@ public class MonthViewFragment extends Fragment {
 
     private boolean IS_EMPTY = false;
 
+    private int start = -1;
+    private int end = 0;
+
 
     /**
      * returns a new MonthViewFragment
@@ -121,19 +124,7 @@ public class MonthViewFragment extends Fragment {
             Calendar leftRange = CoCoinUtil.GetThisWeekLeftRange(monthStart);
             Calendar rightRange = CoCoinUtil.GetThisWeekRightRange(monthEnd);
 
-            int start = -1;
-            int end = 0;
-
-            for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
-                if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
-                    end = i + 1;
-                    break;
-                } else if (recordManager.RECORDS.get(i).getCalendar().before(rightRange)) {
-                    if (start == -1) {
-                        start = i;
-                    }
-                }
-            }
+            setStartEnd();
 
             mAdapter = new RecyclerViewMaterialAdapter(
                     new MonthViewRecyclerViewAdapter(start, end, mContext, position, monthNumber));
@@ -145,6 +136,19 @@ public class MonthViewFragment extends Fragment {
         }
 
         MaterialViewPagerHelper.registerRecyclerView(getActivity(), mRecyclerView, null);
+    }
+
+    private void setStartEnd(){
+        for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
+            if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
+                end = i + 1;
+                break;
+            } else if (recordManager.RECORDS.get(i).getCalendar().before(rightRange)) {
+                if (start == -1) {
+                    start = i;
+                }
+            }
+        }
     }
 
 

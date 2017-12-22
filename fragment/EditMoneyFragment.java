@@ -41,16 +41,23 @@ public class EditMoneyFragment extends Fragment {
 
     public MaterialEditText editView;
 
-    /*
-    other variables
+    /**
+     *  ImageView tagImage
      */
     public ImageView tagImage;
+    
+    /**
+     * TextView tagName
+     */
     public TextView tagName;
 
     private View mView;
 
     Activity activity;
 
+    /**
+     * EditMoneyFragment
+     */
     static public EditMoneyFragment newInstance(int position, int type) {
         EditMoneyFragment fragment = new EditMoneyFragment();
 
@@ -63,6 +70,9 @@ public class EditMoneyFragment extends Fragment {
     }
 
     @Override
+    /**
+     * View onCreateView
+     */
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.edit_money_fragment, container, false);
@@ -115,46 +125,72 @@ public class EditMoneyFragment extends Fragment {
     /**
      * this is a interface called OnTagItemSelectedListener
      */
-
     public interface OnTagItemSelectedListener {
         //a method
         void onTagItemPicked(int position);
     }
 
+    /**
+     * updateTags
+     */
     public void updateTags() {
 
     }
 
+    /**
+     * getTagId
+     */
     public int getTagId() {
         return tagId;
     }
 
+    /**
+     * setTagId
+     */
     public void setTagId(int tagId) {
         this.tagId = tagId;
     }
 
+    /**
+     * setTag
+     */
     public void setTag(int p) {
         tagId = RecordManager.TAGS.get(p).getId();
         tagName.setText(CoCoinUtil.GetTagName(RecordManager.TAGS.get(p).getId()));
         tagImage.setImageResource(CoCoinUtil.GetTagIcon(RecordManager.TAGS.get(p).getId()));
     }
 
+    /**
+     * getNumberText
+     */
     public String getNumberText() {
         return editView.getText().toString();
     }
 
+    /**
+     * setNumberText
+     */
     public void setNumberText(String string) {
         editView.setText(string);
     }
 
+    /**
+     * getHelpText
+     */
     public String getHelpText() {
         return editView.getHelperText();
     }
 
+    /**
+     * setHelpText
+     */
     public void setHelpText(String string) {
         editView.setHelperText(string);
     }
 
+    /**
+     * editRequestFocus
+     */
     public void editRequestFocus() {
         editView.requestFocus();
         InputMethodManager imm = (InputMethodManager)
@@ -162,6 +198,9 @@ public class EditMoneyFragment extends Fragment {
         imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
     }
 
+    /**
+     * setEditColor
+     */
     public void setEditColor(boolean shouldChange) {
         if (shouldChange) {
             editView.setTextColor(SettingManager.getInstance().getRemindColor());
@@ -174,14 +213,23 @@ public class EditMoneyFragment extends Fragment {
         }
     }
 
+    /**
+     * setTagName
+     */
     public void setTagName(String name) {
         tagName.setText(name);
     }
 
+    /**
+     * setTagImage
+     */
     public void setTagImage(int resource) {
         tagImage.setImageResource(resource);
     }
 
+    /**
+     * getTagPosition
+     */
     public void getTagPosition(int[] position) {
         tagImage.getLocationOnScreen(position);
         position[0] += tagImage.getWidth() / 2;
