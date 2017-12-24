@@ -40,21 +40,13 @@ import lecho.lib.hellocharts.model.SliceValue;
 import lecho.lib.hellocharts.view.PieChartView;
 
 /**
- * @autohor 伟平 on 2015/10/20.
- * @since 4.3
- * @version : 3.0
+ * Created by 伟平 on 2015/10/20.
  */
 
-/*
-class manager
- */
+// Todo optimise this
 
 public class MonthViewRecyclerViewAdapter
         extends RecyclerView.Adapter<MonthViewRecyclerViewAdapter.viewHolder> {
-
-    /*
-    declaration variables
-     */
 
     private Context mContext;
 
@@ -83,56 +75,8 @@ public class MonthViewRecyclerViewAdapter
 
     private boolean IS_EMPTY = false;
 
-
-    public void fun1(){
-        for (CoCoinRecord coCoinRecord : list) {
-            if (coCoinRecord.getCalendar().get(Calendar.MONTH) == nowMonth) {
-                TagExpanse.put(coCoinRecord.getTag(),
-                        TagExpanse.get(coCoinRecord.getTag()) + Double.valueOf(coCoinRecord.getMoney()));
-                Expanse.get(coCoinRecord.getTag()).add(coCoinRecord);
-                Sum += coCoinRecord.getMoney();
-                records++;
-            }
-        }
-    }
-
-    public void fun2(){
-        for (Map.Entry<Integer, Double> entry : TagExpanse.entrySet()) {
-            if (entry.getValue() >= 1) {
-                // Todo optimize the GetTagColorResource
-                SliceValue sliceValue = new SliceValue(
-                        (float) (double) entry.getValue(),
-                        mContext.getResources().
-                                getColor(CoCoinUtil.GetTagColorResource(entry.getKey())));
-                sliceValue.setLabel(String.valueOf(entry.getKey()));
-                sliceValues.add(sliceValue);
-                tags++;
-            }
-        }
-    }
-
-
-    public void fun3(){
-        for (int j = 2; j < recordManager.TAGS.size(); j++) {
-            TagExpanse.put(recordManager.TAGS.get(j).getId(), Double.valueOf(0));
-            Expanse.put(recordManager.TAGS.get(j).getId(), new ArrayList<CoCoinRecord>());
-        }
-        for (CoCoinRecord coCoinRecord : list) {
-            if (!coCoinRecord.getCalendar().before(leftWeekRange) &&
-                    coCoinRecord.getCalendar().before(rightWeekRange)) {
-                TagExpanse.put(coCoinRecord.getTag(),
-                        TagExpanse.get(coCoinRecord.getTag()) + Double.valueOf(coCoinRecord.getMoney()));
-                Expanse.get(coCoinRecord.getTag()).add(coCoinRecord);
-                Sum += coCoinRecord.getMoney();
-            }
-        }
-    }
-
     public MonthViewRecyclerViewAdapter(
             int start, int end, Context context, int position, int monthNumber) {
-        /*
-    declaration collection
-     */
         list = new ArrayList<>();
         mContext = context;
         fragmentPosition = position;
@@ -181,11 +125,33 @@ public class MonthViewRecyclerViewAdapter
                 TagExpanse.put(recordManager.TAGS.get(j).getId(), Double.valueOf(0));
                 Expanse.put(recordManager.TAGS.get(j).getId(), new ArrayList<CoCoinRecord>());
             }
-            fun1();
+            for (CoCoinRecord coCoinRecord : list) {
+                if (coCoinRecord.getCalendar().get(Calendar.MONTH) == nowMonth) {
+                    TagExpanse.put(coCoinRecord.getTag(),
+                            TagExpanse.get(coCoinRecord.getTag()) + Double.valueOf(coCoinRecord.getMoney()));
+                    Expanse.get(coCoinRecord.getTag()).add(coCoinRecord);
+                    Sum += coCoinRecord.getMoney();
+                    records++;
+                }
+            }
+
             TagExpanse = CoCoinUtil.SortTreeMapByValues(TagExpanse);
+
             tags = 0;
-            fun2();
+            for (Map.Entry<Integer, Double> entry : TagExpanse.entrySet()) {
+                if (entry.getValue() >= 1) {
+                    // Todo optimize the GetTagColorResource
+                    SliceValue sliceValue = new SliceValue(
+                            (float) (double) entry.getValue(),
+                            mContext.getResources().
+                                    getColor(CoCoinUtil.GetTagColorResource(entry.getKey())));
+                    sliceValue.setLabel(String.valueOf(entry.getKey()));
+                    sliceValues.add(sliceValue);
+                    tags++;
+                }
+            }
             sliceValuesList.add(sliceValues);
+
             TagExpanseList.add(TagExpanse);
             ExpanseList.add(Expanse);
             SumList.add(Sum);
@@ -229,7 +195,21 @@ public class MonthViewRecyclerViewAdapter
                 TagExpanse = new TreeMap<>();
                 Expanse = new HashMap<>();
                 sliceValues = new ArrayList<>();
-                fun3();
+
+                for (int j = 2; j < recordManager.TAGS.size(); j++) {
+                    TagExpanse.put(recordManager.TAGS.get(j).getId(), Double.valueOf(0));
+                    Expanse.put(recordManager.TAGS.get(j).getId(), new ArrayList<CoCoinRecord>());
+                }
+                for (CoCoinRecord coCoinRecord : list) {
+                    if (!coCoinRecord.getCalendar().before(leftWeekRange) &&
+                            coCoinRecord.getCalendar().before(rightWeekRange)) {
+                        TagExpanse.put(coCoinRecord.getTag(),
+                                TagExpanse.get(coCoinRecord.getTag()) + Double.valueOf(coCoinRecord.getMoney()));
+                        Expanse.get(coCoinRecord.getTag()).add(coCoinRecord);
+                        Sum += coCoinRecord.getMoney();
+                    }
+                }
+
                 TagExpanse = CoCoinUtil.SortTreeMapByValues(TagExpanse);
 
                 for (Map.Entry<Integer, Double> entry : TagExpanse.entrySet()) {
@@ -275,127 +255,30 @@ public class MonthViewRecyclerViewAdapter
         return 1;
     }
 
-
-    public void c1(){}
-
-    {
-        view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_month_list_view, parent, false);
-        return new viewHolder(view) {
-        }
-    }
-
-    public void c2(){
-        view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_month_list_view, parent, false);
-        return new viewHolder(view) {
-        }
-    }
-
-
-
     @Override
     public MonthViewRecyclerViewAdapter.viewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        /*
-    declaration variables
-     */
         View view = null;
 
         switch (viewType) {
-            case TYPE_HEADER:
-                c1();
-
-            case TYPE_CELL:
-                c2();
+            case TYPE_HEADER: {
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_month_list_view, parent, false);
+                return new viewHolder(view) {
+                };
+            }
+            case TYPE_CELL: {
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_month_list_view, parent, false);
+                return new viewHolder(view) {
+                };
+            }
         }
 
         return null;
     }
 
-
-    public void v3(){
-        if ("zh".equals(CoCoinUtil.GetLanguage())) {
-            holder.tags.setText(" ● " + records + CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_records) + tags + CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_tags));
-        } else {
-            holder.tags.setText(" ● " + records + " " + CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_records) + " " + tags + " " + CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_tags));
-        }
-    }
-
-    public void v4(){
-        if (SumList.get(position).equals(Double.valueOf(0))) {
-            holder.emptyTip.setVisibility(View.VISIBLE);
-            holder.emptyTip.setTypeface(CoCoinUtil.typefaceLatoLight);
-        } else {
-            holder.emptyTip.setVisibility(View.GONE);
-        }
-    }
-
-    public void v5(){
-        if (!SumList.get(position).equals(Double.valueOf(0))) {
-            holder.iconRight.setVisibility(View.VISIBLE);
-            holder.iconRight.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    selectedPositionList.set(position,
-                            (selectedPositionList.get(position) + 1)
-                                    % sliceValuesList.get(position).size());
-                    SelectedValue selectedValue =
-                            new SelectedValue(
-                                    selectedPositionList.get(position),
-                                    0,
-                                    SelectedValue.SelectedValueType.NONE);
-                    holder.pie.selectValue(selectedValue);
-                }
-            });
-            holder.iconLeft.setVisibility(View.VISIBLE);
-            holder.iconLeft.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    selectedPositionList.set(position,
-                            (selectedPositionList.get(position) - 1
-                                    + sliceValuesList.get(position).size())
-                                    % sliceValuesList.get(position).size());
-                    SelectedValue selectedValue =
-                            new SelectedValue(
-                                    selectedPositionList.get(position),
-                                    0,
-                                    SelectedValue.SelectedValueType.NONE);
-                    holder.pie.selectValue(selectedValue);
-                }
-            });
-        } else {
-            holder.iconLeft.setVisibility(View.GONE);
-            holder.iconRight.setVisibility(View.GONE);
-        }
-    }
-
-
-    public void 5_1(){
-        public void onClick(View v) {
-            if ("zh".equals(CoCoinUtil.GetLanguage())) {
-                dialogTitle = mContext.getResources().getString(R.string.in)
-                        + dateStringList.get(position) +
-                        " " + CoCoinUtil.GetSpendString((int) (double) SumList.get(position));
-            } else {
-                dialogTitle = CoCoinUtil.GetSpendString((int) (double) SumList.get(position)) +
-                        mContext.getResources().getString(R.string.in) + " "
-                        + dateStringList.get(position);
-            }
-            ((FragmentActivity) mContext).getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(new RecordCheckDialogFragment(
-                                    mContext, list, dialogTitle),
-                            "MyDialog")
-                    .commit();
-        }
-    }
-
-
     @Override
     public void onBindViewHolder(final viewHolder holder, final int position) {
-     /*
-     comments here
-      */
 
         if (IS_EMPTY) {
             holder.expanseSum.setText("¥0");
@@ -416,19 +299,78 @@ public class MonthViewRecyclerViewAdapter
             holder.expanseSum.setTypeface(CoCoinUtil.typefaceLatoLight);
 
             holder.tags.setTypeface(CoCoinUtil.typefaceLatoLight);
-            v3();
+            if ("zh".equals(CoCoinUtil.GetLanguage())) {
+                holder.tags.setText(" ● " + records + CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_records) + tags + CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_tags));
+            } else {
+                holder.tags.setText(" ● " + records + " " + CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_records) + " " + tags + " " + CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_tags));
+            }
 
-            v4();
+            if (SumList.get(position).equals(Double.valueOf(0))) {
+                holder.emptyTip.setVisibility(View.VISIBLE);
+                holder.emptyTip.setTypeface(CoCoinUtil.typefaceLatoLight);
+            } else {
+                holder.emptyTip.setVisibility(View.GONE);
+            }
 
             holder.pie.setPieChartData(pieChartDataList.get(position));
             holder.pie.setOnValueTouchListener(new PieValueTouchListener(position));
             holder.pie.setChartRotationEnabled(false);
 
-            v5();
+            if (!SumList.get(position).equals(Double.valueOf(0))) {
+                holder.iconRight.setVisibility(View.VISIBLE);
+                holder.iconRight.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        selectedPositionList.set(position,
+                                (selectedPositionList.get(position) + 1)
+                                        % sliceValuesList.get(position).size());
+                        SelectedValue selectedValue =
+                                new SelectedValue(
+                                        selectedPositionList.get(position),
+                                        0,
+                                        SelectedValue.SelectedValueType.NONE);
+                        holder.pie.selectValue(selectedValue);
+                    }
+                });
+                holder.iconLeft.setVisibility(View.VISIBLE);
+                holder.iconLeft.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        selectedPositionList.set(position,
+                                (selectedPositionList.get(position) - 1
+                                        + sliceValuesList.get(position).size())
+                                        % sliceValuesList.get(position).size());
+                        SelectedValue selectedValue =
+                                new SelectedValue(
+                                        selectedPositionList.get(position),
+                                        0,
+                                        SelectedValue.SelectedValueType.NONE);
+                        holder.pie.selectValue(selectedValue);
+                    }
+                });
+            } else {
+                holder.iconLeft.setVisibility(View.GONE);
+                holder.iconRight.setVisibility(View.GONE);
+            }
 
             holder.all.setOnClickListener(new View.OnClickListener() {
                 @Override
-                v5_1();
+                public void onClick(View v) {
+                    if ("zh".equals(CoCoinUtil.GetLanguage())) {
+                        dialogTitle = mContext.getResources().getString(R.string.in)
+                                + dateStringList.get(position) +
+                                " " + CoCoinUtil.GetSpendString((int) (double) SumList.get(position));
+                    } else {
+                        dialogTitle = CoCoinUtil.GetSpendString((int) (double) SumList.get(position)) +
+                                mContext.getResources().getString(R.string.in) + " "
+                                + dateStringList.get(position);
+                    }
+                    ((FragmentActivity) mContext).getSupportFragmentManager()
+                            .beginTransaction()
+                            .add(new RecordCheckDialogFragment(),
+                                    "MyDialog")
+                            .commit();
+                }
             });
         }
 
@@ -518,8 +460,7 @@ public class MonthViewRecyclerViewAdapter
                                             = ExpanseList.get(position).get(tagId);
                                     ((FragmentActivity) mContext).getSupportFragmentManager()
                                             .beginTransaction()
-                                            .add(new RecordCheckDialogFragment(
-                                                            mContext, shownCoCoinRecords, dialogTitle),
+                                            .add(new RecordCheckDialogFragment(),
                                                     "MyDialog")
                                             .commit();
                                 }

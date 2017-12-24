@@ -1,6 +1,20 @@
 package com.nightonke.saver.fragment;
 
-import javax.swing.text.View;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
@@ -9,17 +23,7 @@ import com.nightonke.saver.R;
 import com.nightonke.saver.activity.CoCoinApplication;
 import com.nightonke.saver.model.Feedback;
 import com.nightonke.saver.util.CoCoinUtil;
-import com.sun.tools.javac.util.JCDiagnostic.Fragment;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
 import cn.bmob.v3.listener.SaveListener;
 
 /**
@@ -63,6 +67,7 @@ public class HelpFeedbackFragment extends Fragment {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     /**
      * onCreate

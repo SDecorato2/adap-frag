@@ -17,12 +17,12 @@ public class CoCoinFragmentManager {
     /**
      * The main EditMoneyFragment
      * */
-    public static EditMoneyFragment mainActivityEditMoneyFragment = null;
+    public static EditMoneyFragment mainActivityEditMoneyFragment = new EditMoneyFragment();
 
     /**
      * The main EditRemarkFragment
      * */
-    public static EditRemarkFragment mainActivityEditRemarkFragment = null;
+    public static EditRemarkFragment mainActivityEditRemarkFragment = new EditRemarkFragment();
 
     /**
      * Edit record activity number
@@ -32,12 +32,12 @@ public class CoCoinFragmentManager {
     /**
      * editRecordActivityEditMoneyFragment
      * */
-    public static EditMoneyFragment editRecordActivityEditMoneyFragment = null;
+    public static EditMoneyFragment editRecordActivityEditMoneyFragment = new EditMoneyFragment();
 
     /**
      * editRecordActivityEditRemarkFragment
      * */
-    public static EditRemarkFragment editRecordActivityEditRemarkFragment = null;
+    public static EditRemarkFragment editRecordActivityEditRemarkFragment = new EditRemarkFragment();
 
     /**
      * passwordChangeFragment
@@ -62,52 +62,23 @@ public class CoCoinFragmentManager {
     /**
      * numberCustomTitleSliderView
      * */
-    public static CustomTitleSliderView numberCustomTitleSliderView = null;
+    public static CustomTitleSliderView numberCustomTitleSliderView = new CustomTitleSliderView();
 
     /**
      * expenseCustomTitleSliderView
      * */
-    public static CustomTitleSliderView expenseCustomTitleSliderView = null;
+    public static CustomTitleSliderView expenseCustomTitleSliderView = new CustomTitleSliderView();
 
     /**
      * reportViewFragment
      * */
-    public static ReportViewFragment reportViewFragment = null;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public static ReportViewFragment reportViewFragment = new ReportViewFragment();
 
     private static CoCoinFragmentManager ourInstance = new CoCoinFragmentManager();
 
+    /**
+     * CoCoinFragmentManager
+     */
     public static CoCoinFragmentManager getInstance() {
         return ourInstance;
     }

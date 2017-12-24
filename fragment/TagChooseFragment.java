@@ -1,19 +1,20 @@
 package com.nightonke.saver.fragment;
 
-import javax.swing.text.View;
-
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import com.nightonke.saver.R;
 import com.nightonke.saver.adapter.TagChooseGridViewAdapter;
 import com.nightonke.saver.model.RecordManager;
 import com.nightonke.saver.ui.MyGridView;
-import com.sun.tools.javac.util.JCDiagnostic.Fragment;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 
 /**
  * Created by 伟平 on 2015/10/27.

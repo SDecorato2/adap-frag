@@ -821,43 +821,67 @@ public class ReportViewFragment extends Fragment
         }
     }
 
+    public void case_icon_right(View v , SelectedValue selectedValue){
+        if ( R.id.icon_right == v.getId())
+            caseIconRight(selectedValue);
+    }
+    public void case_icon_left(View v , SelectedValue selectedValue){
+        if ( R.id.icon_left == v.getId())
+            caseIconLeft(selectedValue);
+    }
+    public void case_higest_first(View v  ){
+        if ( R.id.highest_first == v.getId())
+            onItemClick(highestTags, highestTags.getChildAt(0), -1, -1);
+    }
+    public void case_higest_tag_more(View v ){
+        if ( R.id.highest_tag_more == v.getId())
+            caseHighTagMore();
+    }
+    public void case_lowest_first(View v ){
+        if ( R.id.lowest_first == v.getId())
+            onItemClick(lowestTags, lowestTags.getChildAt(0), -1, -1);
+    }
+    public void case_lowest_tag_more(View v ){
+        if ( R.id.lowest_tag_more == v.getId())
+            caseLowTagMore();
+    }
+    public void case_icon_left_line(View v ,SelectedValue selectedValue){
+        if ( R.id.icon_left_line == v.getId())
+            caseIconLeftLine(selectedValue);
+    }
+    public void case_icon_right_line(View v ,SelectedValue selectedValue){
+        if ( R.id.icon_right_line == v.getId())
+            caseIconRightLine(selectedValue);
+    }
+    public void case_highest_first_month(View v){
+        if ( R.id.highest_first_month == v.getId())
+            onItemClick(highestMonths, highestMonths.getChildAt(0), -1, -1);
+    }
+    public void case_highest_last_month(View v){
+        if ( R.id.highest_last_month == v.getId())
+            onItemClick(highestMonths, highestMonths.getChildAt(0), 10, -1);
+    }
+    public void case_highest_month_more(View v){
+        if ( R.id.highest_month_more == v.getId())
+            caseHighMonthMore();
+    }
+
+
     @Override
     public void onClick(View v) {
         SelectedValue selectedValue = null;
+        case_icon_right(v,selectedValue);
+        case_icon_left(v,selectedValue);
+        case_higest_first(v);
+        case_higest_tag_more(v);
+        case_lowest_first(v);
+        case_lowest_tag_more(v);
+        case_icon_left_line(v,selectedValue);
+        case_icon_right_line(v,selectedValue);
+        case_highest_first_month(v);
+        case_highest_last_month(v);
+        case_highest_month_more(v);
         switch (v.getId()) {
-            case R.id.icon_right:
-                caseIconRight(selectedValue);
-                break;
-            case R.id.icon_left:
-                caseIconLeft(selectedValue);
-                break;
-            case R.id.highest_first:
-                onItemClick(highestTags, highestTags.getChildAt(0), -1, -1);
-                break;
-            case R.id.highest_tag_more:
-                caseHighTagMore();
-                break;
-            case R.id.lowest_first:
-                onItemClick(lowestTags, lowestTags.getChildAt(0), -1, -1);
-                break;
-            case R.id.lowest_tag_more:
-                caseLowTagMore();
-                break;
-            case R.id.icon_left_line:
-                caseIconLeftLine(selectedValue);
-                break;
-            case R.id.icon_right_line:
-                caseIconRightLine(selectedValue);
-                break;
-            case R.id.highest_first_month:
-                onItemClick(highestMonths, highestMonths.getChildAt(0), -1, -1);
-                break;
-            case R.id.highest_last_month:
-                onItemClick(highestMonths, highestMonths.getChildAt(0), 10, -1);
-                break;
-            case R.id.highest_month_more:
-                caseHighMonthMore();
-                break;
             case R.id.highest_first_day:
                 onItemClick(highestDays, highestDays.getChildAt(0), -1, -1);
                 break;
@@ -1134,8 +1158,7 @@ public class ReportViewFragment extends Fragment
             this.isYear = isYear;
         }
 
-        private void doInBackgroundONE(){
-
+        public void doInBackgroundONE_support(){
             for (int i = 0; i < 4; i++) {
                 double[] aTag = {0, 0};
                 needExpense.add(aTag);
@@ -1152,6 +1175,9 @@ public class ReportViewFragment extends Fragment
             double[] tagRecords = new double[RecordManager.getInstance(CoCoinApplication.getAppContext()).TAGS.size() + 1];
             for (int i = tagRecords.length - 1; i >= 0; i--) tagRecords[i] = 0;
 
+        }
+        private void doInBackgroundONE(){
+            doInBackgroundONE_support();
             // month and expense
             ArrayList<double[]> monthExpense = new ArrayList<>();
             for (int i = 0; i < 12; i++) {
@@ -1250,14 +1276,7 @@ public class ReportViewFragment extends Fragment
 
         }
 
-
-        private void caseIsYear(ArrayList<double[]> monthExpense, double[][] dayExpense, ArrayList<double[]> dayExpense2,  double[][] dayRecord){
-            Collections.sort(monthExpense, new Comparator<double[]>() {
-                @Override
-                public int compare(double[] lhs, double[] rhs) {
-                    return Double.compare(rhs[1], lhs[1]);
-                }
-            });
+        public void caseIsYearSupport (ArrayList<double[]> monthExpense, double[][] dayExpense,double[][] dayRecord,ArrayList<double[]> dayExpense2){
             for (int i = 0; i < 12; i++) {
                 double[] aMonth = {reportYear, monthExpense.get(i)[0], -1, monthExpense.get(i)[1], monthExpense.get(i)[1] / expense, monthExpense.get(i)[2]};
                 highestMonthExpense.add(aMonth);
@@ -1281,6 +1300,15 @@ public class ReportViewFragment extends Fragment
                     dayExpense2.add(aDay);
                 }
             }
+        }
+        private void caseIsYear(ArrayList<double[]> monthExpense, double[][] dayExpense, ArrayList<double[]> dayExpense2,  double[][] dayRecord){
+            Collections.sort(monthExpense, new Comparator<double[]>() {
+                @Override
+                public int compare(double[] lhs, double[] rhs) {
+                    return Double.compare(rhs[1], lhs[1]);
+                }
+            });
+            caseIsYearSupport(monthExpense,dayExpense,dayRecord,dayExpense2);
             Collections.sort(dayExpense2, new Comparator<double[]>() {
                 @Override
                 public int compare(double[] lhs, double[] rhs) {
@@ -1310,19 +1338,21 @@ public class ReportViewFragment extends Fragment
             averageDayRecord = records / calendar.getActualMaximum(Calendar.DAY_OF_YEAR);
         }
 
-
+    public void caseIsNotYearSuppoirt(double[][] dayExpense, double[][] dayRecord, ArrayList<double[]> dayExpense2){
+        for (int i = 0; i < 12; i++) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(reportYear, i, 1, 0, 0, 0);
+            calendar.add(Calendar.SECOND, 0);
+            int dayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+            for (int j = 1; j <= dayOfMonth; j++) {
+                double[] aDay = {i, j, dayExpense[i][j], dayRecord[i][j]};
+                dayExpense2.add(aDay);
+            }
+        }
+    }
         private void caseIsNotYear(double[][] dayExpense, double[][] dayRecord){
             ArrayList<double[]> dayExpense2 = new ArrayList<>();
-            for (int i = 0; i < 12; i++) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(reportYear, i, 1, 0, 0, 0);
-                calendar.add(Calendar.SECOND, 0);
-                int dayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-                for (int j = 1; j <= dayOfMonth; j++) {
-                    double[] aDay = {i, j, dayExpense[i][j], dayRecord[i][j]};
-                    dayExpense2.add(aDay);
-                }
-            }
+            caseIsNotYearSuppoirt(dayExpense,dayRecord,dayExpense2);
             Collections.sort(dayExpense2, new Comparator<double[]>() {
                 @Override
                 public int compare(double[] lhs, double[] rhs) {
@@ -1671,8 +1701,7 @@ public class ReportViewFragment extends Fragment
             if (progressDialog != null) progressDialog.dismiss();
             ((FragmentActivity)mContext).getSupportFragmentManager()
                     .beginTransaction()
-                    .add(new RecordCheckDialogFragment(
-                            mContext, selectedRecord, dialogTitle), "MyDialog")
+                    .add(new RecordCheckDialogFragment(), "MyDialog")
                     .commit();
         }
     }

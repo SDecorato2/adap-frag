@@ -30,7 +30,7 @@ public class ReportTagAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public double[] getItem(int position) {
         return null;
     }
 

@@ -31,7 +31,7 @@ public class ReportMonthAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Integer getItem(int position) {
         return null;
     }
 

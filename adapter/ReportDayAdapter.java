@@ -10,7 +10,6 @@ import com.nightonke.saver.R;
 import com.nightonke.saver.activity.CoCoinApplication;
 import com.nightonke.saver.fragment.ReportViewFragment;
 import com.nightonke.saver.util.CoCoinUtil;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -34,7 +33,7 @@ public class ReportDayAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public double[] getItem(int position) {
         return null;
     }
 

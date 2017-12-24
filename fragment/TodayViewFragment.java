@@ -83,7 +83,7 @@ public class TodayViewFragment extends Fragment {
     }
 
     public void fun1(){
-        leftRange = CoCoinUtil.GetTodayLeftRange(now);
+        leftRang  = CoCoinUtil.GetTodayLeftRange(now);
         for (int i = recordManager.RECORDS.size() - 1; i >= 0; i--) {
             if (recordManager.RECORDS.get(i).getCalendar().before(leftRange)) {
                 end = i + 1;

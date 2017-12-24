@@ -82,9 +82,10 @@ public class EditRemarkFragment extends Fragment {
     }
 
     /**
-     * interface OnTagItemSelectedListener
+     * @interface OnTagItemSelectedListener
      */
     public interface OnTagItemSelectedListener {
+        //tag
         void onTagItemPicked(int position);
     }
 

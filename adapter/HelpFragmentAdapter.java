@@ -27,13 +27,13 @@ public class HelpFragmentAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int pos) {
+    public Fragment getItem(int position) {
         switch (this.position) {
             case 0: return HelpCoCoinFragment.newInstance();
             case 1: return HelpFeedbackFragment.newInstance();
             case 2: return HelpAboutFragment.newInstance();
+            default: return null;
         }
-        return null;
     }
 
     @Override
@@ -42,12 +42,12 @@ public class HelpFragmentAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
-    public CharSequence getPageTitle(int pos) {
+    public CharSequence getPageTitle(int position) {
         switch (this.position) {
             case 0: return CoCoinApplication.getAppContext().getResources().getString(R.string.app_name);
             case 1: return CoCoinApplication.getAppContext().getResources().getString(R.string.feedback);
             case 2: return CoCoinApplication.getAppContext().getResources().getString(R.string.about);
+            default: return "";
         }
-        return "";
     }
 }

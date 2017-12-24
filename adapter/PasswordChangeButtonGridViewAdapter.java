@@ -1,6 +1,7 @@
 package com.nightonke.saver.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +21,16 @@ import net.steamcrafted.materialiconlib.MaterialIconView;
  * Created by 伟平 on 2015/10/16.
  */
 
+
+//solved duplicate code problem
 public class PasswordChangeButtonGridViewAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
     private Context mContext;
 
+    private ViewHolder holder;
+
+    //duplicated code
     public PasswordChangeButtonGridViewAdapter(Context context) {
         this.inflater = LayoutInflater.from(context);
         this.mContext = context;
@@ -36,7 +42,7 @@ public class PasswordChangeButtonGridViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Integer getItem(int position) {
         return position;
     }
 
@@ -47,39 +53,22 @@ public class PasswordChangeButtonGridViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final ViewHolder holder;
         if (convertView == null) {
-            holder = new ViewHolder();
-            convertView = this.inflater.inflate(R.layout.button_gridview_item, null);
-            holder.fl = (FrameLayout)convertView.findViewById(R.id.frame_layout);
-            holder.iv = (MaterialIconView)convertView.findViewById(R.id.icon);
-            holder.tv = (TextView) convertView.findViewById(R.id.textview);
-            holder.ml = (MaterialRippleLayout)convertView.findViewById(R.id.material_ripple_layout);
-            convertView.setTag(holder);
+            function4(position);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
         if (position == 11) {
-            holder.tv.setTypeface(CoCoinUtil.typefaceLatoHairline);
-            holder.tv.setVisibility(View.INVISIBLE);
-            holder.iv.setIcon(MaterialDrawableBuilder.IconValue.CHECK);
-            holder.ml.setRippleAlpha(50);
+            function1();
         } else if (position == 9) {
-            holder.iv.setIcon(MaterialDrawableBuilder.IconValue.ERASER);
-            holder.tv.setTypeface(CoCoinUtil.typefaceLatoHairline);
-            holder.tv.setVisibility(View.INVISIBLE);
-            holder.ml.setRippleAlpha(50);
+            function2();
         } else {
-            holder.iv.setVisibility(View.INVISIBLE);
-            holder.tv.setTypeface(CoCoinUtil.typefaceLatoHairline);
-            holder.tv.setText(CoCoinUtil.BUTTONS[position]);
-            holder.ml.setRippleDelayClick(false);
+            function3(position);
         }
 
         holder.ml.setRippleDuration(300);
-        holder.fl.setBackgroundColor(
-                CoCoinUtil.getAlphaColor(SettingManager.getInstance().getRemindColor()));
+        holder.fl.setBackgroundColor(CoCoinUtil.getAlphaColor(SettingManager.getInstance().getRemindColor()));
         holder.ml.setRippleColor(SettingManager.getInstance().getRemindColor());
         holder.iv.setColor(SettingManager.getInstance().getRemindColor());
         holder.tv.setTextColor(SettingManager.getInstance().getRemindColor());
@@ -87,7 +76,6 @@ public class PasswordChangeButtonGridViewAdapter extends BaseAdapter {
         holder.ml.setRippleColor(CoCoinUtil.MY_BLUE);
         holder.iv.setColor(CoCoinUtil.MY_BLUE);
         holder.tv.setTextColor(CoCoinUtil.MY_BLUE);
-
 
         return convertView;
     }
@@ -97,5 +85,37 @@ public class PasswordChangeButtonGridViewAdapter extends BaseAdapter {
         TextView tv;
         MaterialIconView iv;
         MaterialRippleLayout ml;
+    }
+
+    public void function1(){
+        restore();
+        holder.iv.setIcon(MaterialDrawableBuilder.IconValue.CHECK);
+    }
+
+    public void function2(){
+        holder.iv.setIcon(MaterialDrawableBuilder.IconValue.ERASER);
+        restore();
+    }
+
+    public void function3(int position){
+        start();
+        holder.tv.setText(CoCoinUtil.BUTTONS[position]);
+    }
+
+    public void function4(int position1){
+        start();
+        holder.tv.setText(CoCoinUtil.BUTTONS[position1]);
+    }
+
+    public void restore(){
+        holder.tv.setTypeface(CoCoinUtil.typefaceLatoHairline);
+        holder.tv.setVisibility(View.INVISIBLE);
+        holder.ml.setRippleAlpha(50);
+    }
+
+    public void start(){
+        holder.iv.setVisibility(View.INVISIBLE);
+        holder.tv.setTypeface(CoCoinUtil.typefaceLatoHairline);
+        holder.ml.setRippleDelayClick(false);
     }
 }

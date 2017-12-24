@@ -1,18 +1,16 @@
 package com.nightonke.saver.fragment;
 
-import java.awt.Button;
-import java.awt.Dialog;
+
 import java.util.List;
-
-import javax.swing.text.View;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nightonke.saver.R;
 import com.nightonke.saver.adapter.RecordCheckDialogRecyclerViewAdapter;
 import com.nightonke.saver.model.CoCoinRecord;
 import com.nightonke.saver.util.CoCoinUtil;
+import com.rey.material.app.Dialog;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +19,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -32,12 +32,6 @@ public class RecordCheckDialogFragment extends DialogFragment implements RecordC
     private List<CoCoinRecord> list;
     private Context mContext;
     private String title;
-
-    public RecordCheckDialogFragment(Context context, List<CoCoinRecord> list, String title) {
-        this.list = list;
-        this.title = title;
-        mContext = context;
-    }
 
     public RecordCheckDialogFragment() {
     }
@@ -54,8 +48,6 @@ public class RecordCheckDialogFragment extends DialogFragment implements RecordC
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         RecordCheckDialogRecyclerViewAdapter adapter = new RecordCheckDialogRecyclerViewAdapter(context, list, this);
-
-        recyclerView.setAdapter(adapter);
 
         builder.setTitle("Title");
 
@@ -84,7 +76,7 @@ public class RecordCheckDialogFragment extends DialogFragment implements RecordC
             }
         });
 
-        return alert;
+        return null;
     }
 
     @Override

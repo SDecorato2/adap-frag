@@ -246,8 +246,7 @@ public class CustomViewFragment extends Fragment {
         refWatcher.watch(this);
     }
 
-    private void select() {
-
+    private void selectONE(){
         if (RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS == null
                 || RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size() == 0) {
             return;
@@ -275,6 +274,40 @@ public class CustomViewFragment extends Fragment {
                 }
             }
         }
+    }
+
+    private void selectTWO(int size2, long startDay2){
+        for (int j = 2; j < size2; j++) {
+            TagExpanse.put(RecordManager.TAGS.get(j).getId(), Double.valueOf(0));
+            Expanse.put(RecordManager.TAGS.get(j).getId(), new ArrayList<CoCoinRecord>());
+        }
+
+        for (int i = start; i >= end; i--) {
+            CoCoinRecord coCoinRecord = RecordManager.RECORDS.get(i);
+            TagExpanse.put(coCoinRecord.getTag(),
+                    TagExpanse.get(coCoinRecord.getTag()) + Double.valueOf(coCoinRecord.getMoney()));
+            Expanse.get(coCoinRecord.getTag()).add(coCoinRecord);
+            Sum += coCoinRecord.getMoney();
+            originalTargets[(int)(TimeUnit.MILLISECONDS.toDays(
+                    coCoinRecord.getCalendar().getTimeInMillis()) - startDay2)] += coCoinRecord.getMoney();
+        }
+    }
+
+    private void selectTHREE(ArrayList<SliceValue> sliceValues2){
+        for (Map.Entry<Integer, Double> entry : TagExpanse.entrySet()) {
+            if (entry.getValue() >= 1) {
+                SliceValue sliceValue = new SliceValue(
+                        (float)(double)entry.getValue(),
+                        CoCoinUtil.GetTagColor(entry.getKey()));
+                sliceValue.setLabel(String.valueOf(entry.getKey()));
+                sliceValues2.add(sliceValue);
+            }
+        }
+    }
+
+    private void select() {
+
+        selectONE();
 
         startDayCalendar = (Calendar)from.clone();
         startDayCalendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -288,20 +321,8 @@ public class CustomViewFragment extends Fragment {
         originalTargets = new float[(int)days];
 
         int size = RecordManager.TAGS.size();
-        for (int j = 2; j < size; j++) {
-            TagExpanse.put(RecordManager.TAGS.get(j).getId(), Double.valueOf(0));
-            Expanse.put(RecordManager.TAGS.get(j).getId(), new ArrayList<CoCoinRecord>());
-        }
 
-        for (int i = start; i >= end; i--) {
-            CoCoinRecord coCoinRecord = RecordManager.RECORDS.get(i);
-            TagExpanse.put(coCoinRecord.getTag(),
-                    TagExpanse.get(coCoinRecord.getTag()) + Double.valueOf(coCoinRecord.getMoney()));
-            Expanse.get(coCoinRecord.getTag()).add(coCoinRecord);
-            Sum += coCoinRecord.getMoney();
-            originalTargets[(int)(TimeUnit.MILLISECONDS.toDays(
-                    coCoinRecord.getCalendar().getTimeInMillis()) - startDay)] += coCoinRecord.getMoney();
-        }
+        selectTWO(size,startDay);
 
         expense.setText(CoCoinUtil.GetInMoney(Sum));
         emptyTip.setVisibility(View.GONE);
@@ -310,15 +331,7 @@ public class CustomViewFragment extends Fragment {
 
         final ArrayList<SliceValue> sliceValues = new ArrayList<>();
 
-        for (Map.Entry<Integer, Double> entry : TagExpanse.entrySet()) {
-            if (entry.getValue() >= 1) {
-                SliceValue sliceValue = new SliceValue(
-                        (float)(double)entry.getValue(),
-                        CoCoinUtil.GetTagColor(entry.getKey()));
-                sliceValue.setLabel(String.valueOf(entry.getKey()));
-                sliceValues.add(sliceValue);
-            }
-        }
+        selectTHREE(sliceValues);
 
         final PieChartData pieChartData = new PieChartData(sliceValues);
 
@@ -450,30 +463,35 @@ public class CustomViewFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 List<CoCoinRecord> data = new LinkedList<CoCoinRecord>();
-                for (int i = start; i >= end; i--) data.add(RecordManager.RECORDS.get(i));
-                if ("zh".equals(CoCoinUtil.GetLanguage())) {
-                    dialogTitle = dateShownString + "\n" +
-                            CoCoinUtil.GetSpendString(Sum) +
-                            "于" + CoCoinUtil.GetTagName(tagId);
-                } else {
-                    dialogTitle = CoCoinUtil.GetSpendString(Sum) + " "
-                            + mContext.getResources().getString(R.string.from) + " " +
-                            CoCoinUtil.GetMonthShort(from.get(Calendar.MONTH) + 1) + " " +
-                            from.get(Calendar.DAY_OF_MONTH) + " " +
-                            from.get(Calendar.YEAR) + "\n" +
-                            mContext.getResources().getString(R.string.to) + " " +
-                            CoCoinUtil.GetMonthShort(to.get(Calendar.MONTH) + 1) + " " +
-                            to.get(Calendar.DAY_OF_MONTH) + " " +
-                            to.get(Calendar.YEAR) + " " +
-                            "in " + CoCoinUtil.GetTagName(tagId);
-                }
+
+                listADD(data);
+
                 ((FragmentActivity)mContext).getSupportFragmentManager()
                         .beginTransaction()
-                        .add(new RecordCheckDialogFragment(
-                                mContext, data, dialogTitle), "MyDialog")
+                        .add(new RecordCheckDialogFragment(), "MyDialog")
                         .commit();
             }
         });
+    }
+
+    private void listADD(List<CoCoinRecord> data2){
+        for (int i = start; i >= end; i--) data2.add(RecordManager.RECORDS.get(i));
+        if ("zh".equals(CoCoinUtil.GetLanguage())) {
+            dialogTitle = dateShownString + "\n" +
+                    CoCoinUtil.GetSpendString(Sum) +
+                    "于" + CoCoinUtil.GetTagName(tagId);
+        } else {
+            dialogTitle = CoCoinUtil.GetSpendString(Sum) + " "
+                    + mContext.getResources().getString(R.string.from) + " " +
+                    CoCoinUtil.GetMonthShort(from.get(Calendar.MONTH) + 1) + " " +
+                    from.get(Calendar.DAY_OF_MONTH) + " " +
+                    from.get(Calendar.YEAR) + "\n" +
+                    mContext.getResources().getString(R.string.to) + " " +
+                    CoCoinUtil.GetMonthShort(to.get(Calendar.MONTH) + 1) + " " +
+                    to.get(Calendar.DAY_OF_MONTH) + " " +
+                    to.get(Calendar.YEAR) + " " +
+                    "in " + CoCoinUtil.GetTagName(tagId);
+        }
     }
 
     private class mActionClickListenerForPie implements ActionClickListener {
@@ -482,8 +500,7 @@ public class CustomViewFragment extends Fragment {
             List<CoCoinRecord> shownCoCoinRecords = Expanse.get(tagId);
             ((FragmentActivity)mContext).getSupportFragmentManager()
                     .beginTransaction()
-                    .add(new RecordCheckDialogFragment(
-                            mContext, shownCoCoinRecords, dialogTitle), "MyDialog")
+                    .add(new RecordCheckDialogFragment(), "MyDialog")
                     .commit();
         }
     }

@@ -25,6 +25,7 @@ public class ButtonGridViewAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
     private Context mContext;
+    private  ViewHolder holder;
 
     public ButtonGridViewAdapter(Context context) {
         this.inflater = LayoutInflater.from(context);
@@ -37,7 +38,7 @@ public class ButtonGridViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Integer getItem(int position) {
         return position;
     }
 
@@ -48,34 +49,19 @@ public class ButtonGridViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final ViewHolder holder;
+
         if (convertView == null) {
-            holder = new ViewHolder();
-            convertView = this.inflater.inflate(R.layout.button_gridview_item, null);
-            holder.fl = (FrameLayout)convertView.findViewById(R.id.frame_layout);
-            holder.iv = (MaterialIconView)convertView.findViewById(R.id.icon);
-            holder.tv = (TextView) convertView.findViewById(R.id.textview);
-            holder.ml = (MaterialRippleLayout)convertView.findViewById(R.id.material_ripple_layout);
-            convertView.setTag(holder);
+            function4(convertView);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
         if (position == 11) {
-            holder.tv.setTypeface(CoCoinUtil.typefaceLatoHairline);
-            holder.tv.setVisibility(View.INVISIBLE);
-            holder.iv.setIcon(MaterialDrawableBuilder.IconValue.CHECK);
-            holder.ml.setRippleAlpha(50);
+            function1();
         } else if (position == 9) {
-            holder.iv.setIcon(MaterialDrawableBuilder.IconValue.ERASER);
-            holder.tv.setTypeface(CoCoinUtil.typefaceLatoHairline);
-            holder.tv.setVisibility(View.INVISIBLE);
-            holder.ml.setRippleAlpha(50);
+            function2();
         } else {
-            holder.iv.setVisibility(View.INVISIBLE);
-            holder.tv.setTypeface(CoCoinUtil.typefaceLatoHairline);
-            holder.tv.setText(CoCoinUtil.BUTTONS[position]);
-            holder.ml.setRippleDelayClick(false);
+            function3(position);
         }
 
         holder.ml.setRippleDuration(300);
@@ -85,21 +71,62 @@ public class ButtonGridViewAdapter extends BaseAdapter {
                 && RecordManager.getCurrentMonthExpense()
                 >= SettingManager.getInstance().getMonthWarning();
         if (shouldChange) {
-            holder.fl.setBackgroundColor(
-                    CoCoinUtil.getAlphaColor(SettingManager.getInstance().getRemindColor()));
-            holder.ml.setRippleColor(SettingManager.getInstance().getRemindColor());
-            holder.iv.setColor(SettingManager.getInstance().getRemindColor());
-            holder.tv.setTextColor(SettingManager.getInstance().getRemindColor());
+            function5();
         } else {
-            holder.fl.setBackgroundColor(CoCoinUtil.getAlphaColor(CoCoinUtil.MY_BLUE));
-            holder.ml.setRippleColor(CoCoinUtil.MY_BLUE);
-            holder.iv.setColor(CoCoinUtil.MY_BLUE);
-            holder.tv.setTextColor(CoCoinUtil.MY_BLUE);
+            function6();
         }
-
 
         return convertView;
     }
+
+
+    public void function6(){
+        holder.fl.setBackgroundColor(CoCoinUtil.getAlphaColor(CoCoinUtil.MY_BLUE));
+        holder.ml.setRippleColor(CoCoinUtil.MY_BLUE);
+        holder.iv.setColor(CoCoinUtil.MY_BLUE);
+        holder.tv.setTextColor(CoCoinUtil.MY_BLUE);
+    }
+
+    public void function5(){
+        holder.fl.setBackgroundColor(CoCoinUtil.getAlphaColor(SettingManager.getInstance().getRemindColor()));
+        holder.ml.setRippleColor(SettingManager.getInstance().getRemindColor());
+        holder.iv.setColor(SettingManager.getInstance().getRemindColor());
+        holder.tv.setTextColor(SettingManager.getInstance().getRemindColor());
+    }
+
+    public void function4( View convertView1){
+        holder = new ViewHolder();
+        convertView1 = this.inflater.inflate(R.layout.button_gridview_item, null);
+        holder.fl = (FrameLayout)convertView1.findViewById(R.id.frame_layout);
+        holder.iv = (MaterialIconView)convertView1.findViewById(R.id.icon);
+        holder.tv = (TextView) convertView1.findViewById(R.id.textview);
+        holder.ml = (MaterialRippleLayout)convertView1.findViewById(R.id.material_ripple_layout);
+        convertView1.setTag(holder);
+    }
+
+    public void duplicate(){
+        holder.iv.setVisibility(View.INVISIBLE);
+        holder.tv.setTypeface(CoCoinUtil.typefaceLatoHairline);
+    }
+
+    public void function3(int posizione){
+        duplicate();
+        holder.tv.setText(CoCoinUtil.BUTTONS[posizione]);
+        holder.ml.setRippleDelayClick(false);
+    }
+
+    public void function2(){
+        holder.iv.setIcon(MaterialDrawableBuilder.IconValue.ERASER);
+        duplicate();
+        holder.ml.setRippleAlpha(50);
+    }
+
+    public void function1(){
+        duplicate();
+        holder.iv.setIcon(MaterialDrawableBuilder.IconValue.CHECK);
+        holder.ml.setRippleAlpha(50);
+    }
+
 
     private class ViewHolder {
         FrameLayout fl;
